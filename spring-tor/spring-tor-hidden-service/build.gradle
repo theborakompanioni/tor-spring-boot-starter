@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+}
+
+description = 'tor hidden service package'
+
+dependencies {
+    api project(':spring-tor:spring-tor-core')
+
+    api "io.projectreactor:reactor-core"
+}

@@ -1,0 +1,8 @@
+rootProject.name = 'tor-spring-boot-starter'
+
+include 'spring-tor:spring-tor-core'
+include 'spring-tor:spring-tor-hidden-service'
+include 'spring-tor:spring-tor-http'
+include 'spring-tor:spring-tor-autoconfigure'
+include 'spring-tor:spring-tor-starter'
+include 'spring-tor:spring-tor-example-application'

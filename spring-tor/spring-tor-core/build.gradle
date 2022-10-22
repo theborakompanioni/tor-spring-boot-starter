@@ -1,0 +1,12 @@
+plugins {
+    id 'java'
+}
+
+description = 'tor core package'
+
+dependencies {
+    api "io.projectreactor:reactor-core"
+
+    api "com.github.bisq-network.netlayer:tor.native:${netlayerVersion}"
+    api "com.github.bisq-network.netlayer:tor.external:${netlayerVersion}"
+}

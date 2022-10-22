@@ -1,0 +1,284 @@
+import io.franzbecker.gradle.lombok.task.DelombokTask
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+buildscript {
+    apply from: 'versions.gradle'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootGradlePluginVersion}")
+    }
+}
+
+plugins {
+    id 'idea'
+    id 'nebula.release' version '16.0.0'
+    id 'nebula.lint' version '17.6.1'
+    id 'nebula.project' version '9.6.3'
+    id 'com.github.spotbugs' version '5.0.9' apply false
+    id 'org.springframework.boot' version "$springBootGradlePluginVersion" apply false
+    id 'io.franzbecker.gradle-lombok' version '5.0.0' apply false
+}
+
+contacts {
+    'theborakompanioni+github@gmail.com' {
+        moniker 'theborakompanioni'
+        github 'theborakompanioni'
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        // check for updates in modules every build
+        cacheChangingModulesFor 0, 'seconds'
+        preferProjectModules()
+        // fail eagerly on version conflict (includes transitive dependencies)
+        // e.g. multiple different versions of the same dependency (group and name are equal)
+        failOnVersionConflict()
+    }
+}
+
+allprojects {
+    apply plugin: 'nebula.lint'
+
+    group = 'io.github.theborakompanioni'
+
+    gradleLint {
+        alwaysRun = false // do not automatically run - must be executed manually
+        autoLintAfterFailure = false // only run lint after a successful build
+        criticalRules = [
+                'dependency-parantheses',
+                'overridden-dependency-version',
+                'unused-exclude-by-conf',
+                'dependency-tuple-expression'
+        ]
+        // duplicate dependency false positives from "compileOnly 'javax.servlet:javax.servlet-api'"
+        excludedRules = ['duplicate-dependency-class']
+    }
+}
+
+subprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'jacoco'
+    apply plugin: 'checkstyle'
+    apply plugin: 'com.github.spotbugs'
+    apply plugin: 'nebula.project'
+    apply plugin: 'nebula.info'
+    apply plugin: 'nebula.integtest-standalone'
+    apply plugin: 'io.franzbecker.gradle-lombok'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+
+    repositories {
+        mavenCentral()
+        maven {
+            // needed for netlayer packages
+            url "https://jitpack.io"
+        }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom SpringBootPlugin.BOM_COORDINATES
+        }
+    }
+
+    dependencies {
+        compileOnly "com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}"
+        testCompileOnly "com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}"
+        spotbugsPlugins "com.h3xstream.findsecbugs:findsecbugs-plugin:${findsecbugsPluginVersion}"
+
+        implementation 'org.slf4j:slf4j-api'
+        implementation "com.google.guava:guava:${guavaVersion}"
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-api'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+
+    jar {
+        includeEmptyDirs false
+    }
+
+    task sourcesJar(type: Jar) {
+        archiveClassifier.set('sources')
+        from sourceSets.main.java
+    }
+
+    task testJar(type: Jar) {
+        archiveClassifier.set('test')
+        from sourceSets.test.output
+    }
+
+    pluginManager.withPlugin('org.springframework.boot') {
+
+        dependencies {
+            developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        }
+
+        jar {
+            enabled = true
+        }
+
+        bootJar {
+            // creates a launch script for the executable jar
+            launchScript()
+            archiveClassifier.set('boot')
+
+            includeEmptyDirs false
+        }
+
+        springBoot {
+            buildInfo {
+                properties {
+                    // overwrite "time" property to enable reproducible builds
+                    // see https://reproducible-builds.org/docs/timestamps/
+                    time = System.getenv('SOURCE_DATE_EPOCH') ?: null
+                }
+            }
+        }
+    }
+
+    test {
+        finalizedBy jacocoTestReport // report is always generated after tests run
+
+        useJUnitPlatform()
+    }
+
+    integrationTest {
+        useJUnitPlatform()
+    }
+
+    jacocoTestReport {
+        dependsOn test // tests are required to run before generating the report
+
+        reports {
+            xml.required = true
+            html.required = true
+            csv.required = false
+        }
+    }
+
+    artifacts {
+        archives testJar
+    }
+
+    lombok {
+        version = "${lombokVersion}"
+        sha256 = null // skip verifyLombok task - will be done by gradle dependency verification
+    }
+
+    tasks.withType(Test) {
+        testLogging {
+            // set options for log level LIFECYCLE
+            events TestLogEvent.STARTED, TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED
+            showExceptions true
+            exceptionFormat TestExceptionFormat.FULL
+            showCauses true
+            showStackTraces true
+
+            afterSuite { desc, result ->
+                if (!desc.parent) { // will match the outermost suite
+                    def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+                    def startItem = '|  ', endItem = '  |'
+                    def repeatLength = startItem.length() + output.length() + endItem.length()
+                    println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
+                }
+            }
+        }
+    }
+
+    task dependencyTree(type: DependencyReportTask) {}
+
+    task delombok(type: DelombokTask, dependsOn: compileJava) {
+        def srcDirs = sourceSets.main.java.srcDirs.findAll { it.exists() }
+
+        enabled = subprojects.isEmpty() && !srcDirs.isEmpty()
+
+        ext.outputDir = file("$buildDir/delombok")
+        outputs.dir(outputDir)
+        srcDirs.each {
+            inputs.dir(it)
+            args(it, "-d", outputDir)
+        }
+
+        doFirst {
+            outputDir.deleteDir()
+        }
+    }
+
+    javadoc {
+        dependsOn delombok
+        source = delombok.outputDir
+        failOnError = false
+    }
+
+    spotbugs {
+        effort = 'max'
+        reportLevel = 'medium' // TODO: set to 'low' to also find 'low confidence issues'
+        ignoreFailures = false
+        excludeFilter = rootProject.file('./spotbugs-exclude.xml')
+        reportsDir = rootProject.file("$rootProject.buildDir/reports/spotbugs/$project.name")
+    }
+    tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
+        onlyIf { gradle.taskGraph.hasTask('build') }
+        reports {
+            html.enabled = true
+            xml.enabled = false
+        }
+    }
+
+    checkstyle {
+        toolVersion = "${checkstyleVersion}"
+        configFile = rootProject.file('./checkstyle.xml')
+        maxErrors = 0
+        ignoreFailures = false
+        reportsDir = rootProject.file("$rootProject.buildDir/reports/checkstyle/$project.name")
+    }
+    tasks.withType(Checkstyle) {
+        onlyIf { gradle.taskGraph.hasTask('build') }
+        reports {
+            xml.required = false
+            html.required = true
+        }
+    }
+
+    tasks.withType(AbstractArchiveTask) {
+        // activate reproducible archives
+        // see https://docs.gradle.org/current/userguide/working_with_files.html#sec:reproducible_archives
+        preserveFileTimestamps = false
+        reproducibleFileOrder = true
+    }
+
+    infoBroker {
+        // exclude properties that prevent reproducible builds
+        excludedManifestProperties = [
+                'Created-By',
+                'Built-By',
+                'Build-Date',
+                'Build-Date-UTC',
+                'Build-Host',
+                'Built-OS',
+                'Build-Timezone',
+                'Build-Url',
+        ]
+    }
+}
+
+// enable publishing for all subproject except for "example applications"
+configure(subprojects.findAll { project -> project.subprojects.isEmpty() &&
+        !project.pluginManager.hasPlugin('org.springframework.boot') &&
+        project.name.indexOf('-example-application') < 0 }) {
+    apply from: "${project.rootDir}/publish.gradle"
+}
+
+
