@@ -82,7 +82,7 @@ Example output (2021-01-21):
 ## Development
 
 ### Requirements
-- java >=11
+- java >=17
 
 ### Build
 ```shell script
