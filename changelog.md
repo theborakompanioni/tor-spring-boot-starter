@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - upgrade: update gradle from v7.4.2 to v7.5.1
+- upgrade: update findsecbugs plugin from v1.11.0 to v1.12.0
 
 ## [0.5.0] - 2022-10-21
 
