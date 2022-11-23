@@ -64,19 +64,19 @@ Start the example application with
 
 Example output (2021-01-21):
 ```
-2021-01-21 01:23:30.035  INFO 313251 --- [  restartedMain] org.berndpruenster.netlayer.tor.Tor      : Starting Tor
-2021-01-21 01:23:33.490  INFO 313251 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2021-01-21 01:23:33.511  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : Started TorExampleApplication in 8.417 seconds (JVM running for 8.972)
-2021-01-21 01:23:33.605  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : =================================================
-2021-01-21 01:23:33.606  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : url: http://<your_onion_url>.onion:80
-2021-01-21 01:23:33.607  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : virtual host: <your_onion_url>.onion
-2021-01-21 01:23:33.607  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : virtual port: 80
-2021-01-21 01:23:33.607  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : host: 127.0.0.1
-2021-01-21 01:23:33.607  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : port: 8080
-2021-01-21 01:23:33.607  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : directory: /home/tbk/workspace/tor-spring-boot-starter/spring-tor/spring-tor-example-application/tor-working-dir/spring_boot_app
-2021-01-21 01:23:33.608  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : -------------------------------------------------
-2021-01-21 01:23:33.608  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : run: torsocks -p 46735 curl http://<your_onion_url>.onion:80/index.html -v
-2021-01-21 01:23:33.608  INFO 313251 --- [  restartedMain] o.t.t.s.example.TorExampleApplication    : =================================================
+2021-01-21 01:23:30.035  INFO [...] : Starting Tor
+2021-01-21 01:23:33.490  INFO [...] : Tomcat started on port(s): 8080 (http) with context path ''
+2021-01-21 01:23:33.511  INFO [...] : Started TorExampleApplication in 8.417 seconds (JVM running for 8.972)
+2021-01-21 01:23:33.605  INFO [...] : =================================================
+2021-01-21 01:23:33.606  INFO [...] : url: http://<your_onion_url>.onion:80
+2021-01-21 01:23:33.607  INFO [...] : virtual host: <your_onion_url>.onion
+2021-01-21 01:23:33.607  INFO [...] : virtual port: 80
+2021-01-21 01:23:33.607  INFO [...] : host: 127.0.0.1
+2021-01-21 01:23:33.607  INFO [...] : port: 8080
+2021-01-21 01:23:33.607  INFO [...] : directory: /home/tbk/workspace/tor-spring-boot-starter/spring-tor/spring-tor-example-application/tor-working-dir/spring_boot_app
+2021-01-21 01:23:33.608  INFO [...] : -------------------------------------------------
+2021-01-21 01:23:33.608  INFO [...] : run: torsocks -p 46735 curl http://<your_onion_url>.onion:80/index.html -v
+2021-01-21 01:23:33.608  INFO [...] : =================================================
 ```
 
 ## Development
