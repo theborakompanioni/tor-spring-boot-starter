@@ -13,6 +13,8 @@ import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthContributor;
 import org.tbk.tor.hs.HiddenServiceDefinition;
+import org.tbk.tor.spring.config.TorAutoConfigProperties;
+import org.tbk.tor.spring.config.TorAutoConfigProperties.HealthCheckProperties;
 
 import java.io.IOException;
 import java.net.URI;
@@ -25,10 +27,14 @@ import static java.util.Objects.requireNonNull;
 
 @Slf4j
 public class HiddenServiceHealthIndicator extends AbstractHealthIndicator implements HealthContributor {
+    private final HealthCheckProperties healthCheckProperties;
     private final HiddenServiceDefinition hiddenService;
     private final CloseableHttpClient torHttpClient;
 
-    public HiddenServiceHealthIndicator(HiddenServiceDefinition hiddenService, CloseableHttpClient torHttpClient) {
+    public HiddenServiceHealthIndicator(HealthCheckProperties healthCheckProperties,
+                                        HiddenServiceDefinition hiddenService,
+                                        CloseableHttpClient torHttpClient) {
+        this.healthCheckProperties = requireNonNull(healthCheckProperties);
         this.hiddenService = requireNonNull(hiddenService);
         this.torHttpClient = requireNonNull(torHttpClient);
     }
@@ -41,6 +47,8 @@ public class HiddenServiceHealthIndicator extends AbstractHealthIndicator implem
                 .put("virtual_port", hiddenService.getVirtualPort())
                 .put("host", hiddenService.getHost())
                 .put("port", hiddenService.getPort())
+                .put("path",  healthCheckProperties.getPath().orElse(""))
+                .put("timeout",  healthCheckProperties.getTimeout())
                 .build();
 
         try {
@@ -72,12 +80,13 @@ public class HiddenServiceHealthIndicator extends AbstractHealthIndicator implem
                 .setScheme("http")
                 .setHost(virtualHost.get())
                 .setPort(hiddenService.getVirtualPort())
+                .setPath(healthCheckProperties.getPath().orElse(null))
                 .build();
 
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout((int) Duration.ofSeconds(10).toMillis())
-                .setConnectTimeout((int) Duration.ofSeconds(10).toMillis())
-                .setSocketTimeout((int) Duration.ofSeconds(10).toMillis())
+                .setConnectionRequestTimeout((int) healthCheckProperties.getTimeout().toMillis())
+                .setConnectTimeout((int) healthCheckProperties.getTimeout().toMillis())
+                .setSocketTimeout((int) healthCheckProperties.getTimeout().toMillis())
                 .setRedirectsEnabled(false)
                 .build();
 

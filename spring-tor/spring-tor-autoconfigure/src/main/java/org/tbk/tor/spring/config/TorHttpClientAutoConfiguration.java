@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.tbk.tor.http.SimpleTorHttpClientBuilder;
 
-@Configuration(proxyBeanMethods = false)
+@Configuration
 @ConditionalOnProperty(value = "org.tbk.tor.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnClass(SimpleTorHttpClientBuilder.class)
 @AutoConfigureAfter(TorAutoConfiguration.class)
@@ -40,7 +40,7 @@ public class TorHttpClientAutoConfiguration {
     public interface TorHttpClientBuilderCustomizer {
 
         /**
-         * Customize the tor Tor Http Client config.
+         * Customize the Tor Http Client config.
          *
          * @param config the {@link HttpClientBuilder} to customize
          */

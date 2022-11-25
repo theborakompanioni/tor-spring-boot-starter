@@ -50,8 +50,10 @@ public class TorHealthContributorAutoConfiguration {
     public class TorHiddenServiceHealthContributorAutoConfiguration extends
             CompositeHealthContributorConfiguration<HiddenServiceHealthIndicator, HiddenServiceDefinition> {
 
-        public TorHiddenServiceHealthContributorAutoConfiguration(@Qualifier("torHttpClient") CloseableHttpClient torHttpClient) {
-            super(bean -> new HiddenServiceHealthIndicator(bean, torHttpClient));
+        public TorHiddenServiceHealthContributorAutoConfiguration(
+                TorAutoConfigProperties properties,
+                @Qualifier("torHttpClient") CloseableHttpClient torHttpClient) {
+            super(bean -> new HiddenServiceHealthIndicator(properties.getHealth(), bean, torHttpClient));
         }
 
         @Bean

@@ -10,6 +10,7 @@ import org.springframework.validation.Validator;
 import java.net.InetAddress;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 @Data
 @ConfigurationProperties(
@@ -22,6 +23,8 @@ public class TorAutoConfigProperties implements Validator {
     private static final int DEFAULT_VIRTUAL_PORT = 80; // http: 80; https: 443
     private static final Duration DEFAULT_START_TIMEOUT = Duration.ofSeconds(60);
     private static final OnionLocationHeaderProperties DEFAULT_ONION_LOCATION_HEADER = new OnionLocationHeaderProperties();
+
+    private static final HealthCheckProperties DEFAULT_HEALTH_CHECK = new HealthCheckProperties();
 
     private boolean enabled;
 
@@ -36,6 +39,8 @@ public class TorAutoConfigProperties implements Validator {
     private Duration startupTimeout;
 
     private OnionLocationHeaderProperties onionLocationHeader;
+
+    private HealthCheckProperties health;
 
     public String getWorkingDirectory() {
         return workingDirectory != null ? workingDirectory : DEFAULT_WORKING_DIRECTORY;
@@ -55,6 +60,10 @@ public class TorAutoConfigProperties implements Validator {
 
     public OnionLocationHeaderProperties getOnionLocationHeader() {
         return onionLocationHeader != null ? onionLocationHeader : DEFAULT_ONION_LOCATION_HEADER;
+    }
+
+    public HealthCheckProperties getHealth() {
+        return health != null ? health : DEFAULT_HEALTH_CHECK;
     }
 
     @Override
@@ -85,6 +94,24 @@ public class TorAutoConfigProperties implements Validator {
     public static class OnionLocationHeaderProperties {
         private boolean enabled;
         private boolean allowOnLocalhostHttp;
+    }
+
+    @Data
+    public static class HealthCheckProperties {
+        private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+
+        @DurationUnit(ChronoUnit.SECONDS)
+        private Duration timeout;
+
+        private String path;
+
+        public Duration getTimeout() {
+            return timeout != null ? timeout : DEFAULT_TIMEOUT;
+        }
+
+        public Optional<String> getPath() {
+            return Optional.ofNullable(path);
+        }
     }
 
     /**
