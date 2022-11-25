@@ -26,8 +26,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.requireNonNull;
-
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "org.tbk.tor.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnClass({
@@ -52,15 +50,8 @@ public class TorHealthContributorAutoConfiguration {
     public class TorHiddenServiceHealthContributorAutoConfiguration extends
             CompositeHealthContributorConfiguration<HiddenServiceHealthIndicator, HiddenServiceDefinition> {
 
-        private final CloseableHttpClient torHttpClient;
-
         public TorHiddenServiceHealthContributorAutoConfiguration(@Qualifier("torHttpClient") CloseableHttpClient torHttpClient) {
-            this.torHttpClient = requireNonNull(torHttpClient);
-        }
-
-        @Override
-        protected HiddenServiceHealthIndicator createIndicator(HiddenServiceDefinition bean) {
-            return new HiddenServiceHealthIndicator(bean, this.torHttpClient);
+            super(bean -> new HiddenServiceHealthIndicator(bean, torHttpClient));
         }
 
         @Bean
@@ -81,6 +72,10 @@ public class TorHealthContributorAutoConfiguration {
     })
     public class TorHiddenServiceSocketHealthContributorAutoConfiguration extends
             CompositeHealthContributorConfiguration<HiddenServiceSocketHealthIndicator, HiddenServiceSocket> {
+
+        public TorHiddenServiceSocketHealthContributorAutoConfiguration() {
+            super(HiddenServiceSocketHealthIndicator::new);
+        }
 
         @Bean
         @ConditionalOnMissingBean(name = {"hiddenServiceSocketHealthIndicator", "hiddenServiceSocketHealthContributor"})

@@ -50,6 +50,7 @@ public class TorExampleApplicationWebMvcConfigurer implements WebMvcConfigurer {
         customizeJacksonMessageConverter(converters);
     }
 
+
     /**
      * This is the only way that worked making jackson pretty print json responses.
      *
@@ -78,7 +79,6 @@ public class TorExampleApplicationWebMvcConfigurer implements WebMvcConfigurer {
                 .enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     }
-
 
     public static final class BigDecimalToStringSerializer extends JsonSerializer<BigDecimal> {
 

@@ -105,6 +105,10 @@ subprojects {
         }
     }
 
+    compileJava {
+        options.compilerArgs << '-parameters'
+    }
+
     jar {
         includeEmptyDirs false
     }

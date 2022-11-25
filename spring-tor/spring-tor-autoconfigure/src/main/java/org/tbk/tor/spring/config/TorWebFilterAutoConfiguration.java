@@ -1,5 +1,6 @@
 package org.tbk.tor.spring.config;
 
+import jakarta.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -15,7 +16,6 @@ import org.tbk.tor.hs.HiddenServiceDefinition;
 import org.tbk.tor.spring.config.TorAutoConfigProperties.OnionLocationHeaderProperties;
 import org.tbk.tor.spring.filter.OnionLocationHeaderFilter;
 
-import javax.servlet.Filter;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
