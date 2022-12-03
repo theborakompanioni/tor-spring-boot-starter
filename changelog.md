@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - ability to provide request path and timeout for health check
 
+### Changed
+- upgrade: update checkstyle from v8.44 to v10.3.4
+
 ## [0.6.0] - 2022-11-23
 
 ### Breaking
