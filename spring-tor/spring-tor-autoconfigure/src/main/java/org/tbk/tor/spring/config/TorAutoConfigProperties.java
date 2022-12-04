@@ -1,8 +1,11 @@
 package org.tbk.tor.spring.config;
 
 import com.google.common.base.CharMatcher;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.boot.convert.DurationUnit;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -12,19 +15,21 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
-@Data
+
 @ConfigurationProperties(
         prefix = "org.tbk.tor",
         ignoreUnknownFields = false
 )
+@Getter
+@AllArgsConstructor(onConstructor = @__(@ConstructorBinding))
 public class TorAutoConfigProperties implements Validator {
     private static final boolean DEFAULT_AUTO_PUBLISH_ENABLED = true;
     private static final String DEFAULT_WORKING_DIRECTORY = "tor-working-dir";
     private static final int DEFAULT_VIRTUAL_PORT = 80; // http: 80; https: 443
     private static final Duration DEFAULT_START_TIMEOUT = Duration.ofSeconds(60);
-    private static final OnionLocationHeaderProperties DEFAULT_ONION_LOCATION_HEADER = new OnionLocationHeaderProperties();
+    private static final OnionLocationHeaderProperties DEFAULT_ONION_LOCATION_HEADER = new OnionLocationHeaderProperties(true, false);
 
-    private static final HealthCheckProperties DEFAULT_HEALTH_CHECK = new HealthCheckProperties();
+    private static final HealthCheckProperties DEFAULT_HEALTH_CHECK = new HealthCheckProperties(null, null);
 
     private boolean enabled;
 
@@ -90,13 +95,15 @@ public class TorAutoConfigProperties implements Validator {
         }
     }
 
-    @Data
+    @Getter
+    @AllArgsConstructor(onConstructor = @__(@ConstructorBinding))
     public static class OnionLocationHeaderProperties {
         private boolean enabled;
         private boolean allowOnLocalhostHttp;
     }
 
-    @Data
+    @Getter
+    @AllArgsConstructor(onConstructor = @__(@ConstructorBinding))
     public static class HealthCheckProperties {
         private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
@@ -122,7 +129,8 @@ public class TorAutoConfigProperties implements Validator {
      * HiddenServicePort 80 127.0.0.1:8080
      * </code>
      */
-    @Data
+    @Getter
+    @AllArgsConstructor(onConstructor = @__(@ConstructorBinding))
     public static class HiddenServiceProperties implements Validator {
         private static final int DEFAULT_VIRTUAL_PORT = 80;
         private static final String DEFAULT_HOST = InetAddress.getLoopbackAddress().getHostAddress();

@@ -1,6 +1,7 @@
 package org.tbk.tor.spring.actuate.health;
 
 import com.google.common.collect.ImmutableMap;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.config.RequestConfig;
@@ -11,22 +12,19 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthContributor;
 import org.tbk.tor.hs.HiddenServiceDefinition;
-import org.tbk.tor.spring.config.TorAutoConfigProperties;
 import org.tbk.tor.spring.config.TorAutoConfigProperties.HealthCheckProperties;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
 @Slf4j
-public class HiddenServiceHealthIndicator extends AbstractHealthIndicator implements HealthContributor {
+public class HiddenServiceHealthIndicator extends AbstractHealthIndicator {
     private final HealthCheckProperties healthCheckProperties;
     private final HiddenServiceDefinition hiddenService;
     private final CloseableHttpClient torHttpClient;
@@ -47,8 +45,8 @@ public class HiddenServiceHealthIndicator extends AbstractHealthIndicator implem
                 .put("virtual_port", hiddenService.getVirtualPort())
                 .put("host", hiddenService.getHost())
                 .put("port", hiddenService.getPort())
-                .put("path",  healthCheckProperties.getPath().orElse(""))
-                .put("timeout",  healthCheckProperties.getTimeout())
+                .put("path", healthCheckProperties.getPath().orElse(""))
+                .put("timeout", healthCheckProperties.getTimeout())
                 .build();
 
         try {
@@ -63,6 +61,10 @@ public class HiddenServiceHealthIndicator extends AbstractHealthIndicator implem
         }
     }
 
+    @SuppressFBWarnings(
+            value = "SECCRLFLOG",
+            justification = "It's acceptable to log HiddenServiceDefinition details."
+    )
     @SneakyThrows(URISyntaxException.class)
     private void doHealthCheckInternal(Health.Builder builder) {
         Optional<String> virtualHost = hiddenService.getVirtualHost();
@@ -74,7 +76,9 @@ public class HiddenServiceHealthIndicator extends AbstractHealthIndicator implem
             return;
         }
 
-        log.debug("Performing health check on {}", hiddenService);
+        if (log.isDebugEnabled()) {
+            log.debug("Performing health check on hidden service {}", hiddenService.getName());
+        }
 
         URI url = new URIBuilder(virtualHost.get())
                 .setScheme("http")

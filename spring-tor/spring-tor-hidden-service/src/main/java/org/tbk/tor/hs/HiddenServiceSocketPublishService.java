@@ -2,6 +2,7 @@ package org.tbk.tor.hs;
 
 import com.google.common.util.concurrent.AbstractIdleService;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.extern.slf4j.Slf4j;
 import org.berndpruenster.netlayer.tor.HiddenServiceSocket;
 import org.reactivestreams.FlowAdapters;
@@ -9,6 +10,7 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -19,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Flow;
 import java.util.concurrent.SubmissionPublisher;
+import java.util.function.Consumer;
 
 import static com.google.common.util.concurrent.MoreExecutors.shutdownAndAwaitTermination;
 import static java.util.Objects.requireNonNull;
@@ -63,7 +66,7 @@ public class HiddenServiceSocketPublishService extends AbstractIdleService imple
 
         this.subscription = socketFlux
                 .onErrorContinue((error, obj) -> {
-                    log.error("Error on value " + obj, error);
+                    log.error("Error on subscription value", error);
                 })
                 .parallel()
                 .runOn(subscribeOnScheduler)
@@ -73,24 +76,35 @@ public class HiddenServiceSocketPublishService extends AbstractIdleService imple
                         it.close();
                     } catch (final IOException e) {
                         // there is nothing we can really do on errors when closing sockets
-                        log.debug("Error while closing socket: {}", e.getMessage());
+                        if (log.isDebugEnabled()) {
+                            log.debug("Error while closing socket", e);
+                        }
                     }
                 });
 
         log.info("started successfully");
     }
 
+
     private Flux<Socket> createSocketFlux() {
-        return Flux.create(fluxSink -> {
+        return Flux.create(new Consumer<FluxSink<Socket>>() {
+            @SuppressFBWarnings(
+                    value = "SECCRLFLOG",
+                    justification = "It's acceptable to log InetAddress in trace mode."
+            )
+            @Override
+            public void accept(FluxSink<Socket> fluxSink) {
+                while (!socket.isClosed()) {
+                    try {
+                        Socket acceptedSocket = socket.accept();
+                        if (log.isTraceEnabled()) {
+                            log.trace("socket accepted: {}", acceptedSocket.getInetAddress());
+                        }
 
-            while (!socket.isClosed()) {
-                try {
-                    Socket acceptedSocket = socket.accept();
-                    log.trace("socket accepted: {}", acceptedSocket.getInetAddress());
-
-                    fluxSink.next(acceptedSocket);
-                } catch (IOException e) {
-                    fluxSink.error(e);
+                        fluxSink.next(acceptedSocket);
+                    } catch (IOException e) {
+                        fluxSink.error(e);
+                    }
                 }
             }
         });

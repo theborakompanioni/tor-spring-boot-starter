@@ -22,9 +22,9 @@ public class TorCtrl {
 
     @GetMapping
     @Timed
-    public ResponseEntity<? extends Map<String, Object>> info() {
+    public ResponseEntity<Object> info() {
         Map<String, Object> result = ImmutableMap.<String, Object>builder()
-                .put("class", tor.getClass().getName())
+                .put("className", tor.getClass().getName())
                 .build();
 
         return ResponseEntity.ok(result);

@@ -22,8 +22,8 @@ import org.tbk.tor.hs.HiddenServiceDefinition;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @SpringBootApplication
@@ -89,7 +89,7 @@ public class TorExampleApplication {
         return args -> {
             List<HiddenServiceDefinition> otherHiddenServices = hiddenServices.stream()
                     .filter(val -> val != applicationHiddenServiceDefinition)
-                    .collect(Collectors.toList());
+                    .toList();
 
             otherHiddenServices.forEach(hiddenService -> {
                 Optional<String> httpUrl = applicationHiddenServiceDefinition.getVirtualHost()
@@ -128,7 +128,7 @@ public class TorExampleApplication {
 
             String body = EntityUtils.toString(rsp.getEntity(), StandardCharsets.UTF_8);
 
-            boolean containsErrorPhrase = body.toLowerCase().contains(errorPhraseIgnoreCase.toLowerCase());
+            boolean containsErrorPhrase = body.toLowerCase(Locale.US).contains(errorPhraseIgnoreCase.toLowerCase(Locale.US));
             boolean containsSuccessPhrase = body.contains(successPhrase);
 
             boolean torEnabled = containsSuccessPhrase && !containsErrorPhrase;

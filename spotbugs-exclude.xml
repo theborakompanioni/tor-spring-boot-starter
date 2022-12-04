@@ -6,5 +6,90 @@
     <!--
         see https://spotbugs.readthedocs.io/en/latest/filter.html for documentation
     -->
+    <Match>
+        <Or>
+            <!-- suggests using '%n rather than \n' in string formats.. did not work properly in manual tests -->
+            <Bug pattern="VA_FORMAT_STRING_USES_NEWLINE"/>
+            <!-- exclude 'serialVersionUID' warnings: https://github.com/projectlombok/lombok/wiki/WHY-NOT:-serialVersionUID -->
+            <Bug pattern="SE_NO_SERIALVERSIONID"/>
+            <!--
+                prevents false positives for 'nullcheck of nonnull' in try-catch clauses
+                can be removed when #600 is merged: https://github.com/spotbugs/spotbugs/pull/1575/files
+             -->
+            <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+        </Or>
+    </Match>
+    <Match>
+        <!-- disable some known risks or minor warnings in example apps -->
+        <Package name="~org\.tbk\..*\.example\.?.*" />
+        <Or>
+            <!-- disable 'Persistent objects should never be returned by APIs.' warning in example apps -->
+            <Bug pattern="ENTITY_LEAK"/>
+            <!-- disable 'Spring CSRF protection disabled' warning in example apps -->
+            <Bug pattern="SPRING_CSRF_PROTECTION_DISABLED"/>
+            <!-- disable minor 'include CRLF characters into log messages' warning in example apps -->
+            <Bug pattern="CRLF_INJECTION_LOGS"/>
+        </Or>
+    </Match>
+
+    <Match>
+        <!-- disable some known risks or minor warnings in test classes -->
+        <Class name="~.*Test"/>
+        <Or>
+            <Bug pattern="CRLF_INJECTION_LOGS"/>
+            <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+        </Or>
+    </Match>
+
+    <Match>
+        <!-- prevents jMolecules class name pattern errors, e.g. 'The class name$jMolecules$oTL6KGeP doesn't start with an upper case letter' -->
+        <Class name="~.*\$jMolecules\$.*"/>
+        <Bug pattern="NM_CLASS_NAMING_CONVENTION"/>
+    </Match>
+
+    <Match>
+        <!-- prevents false positives in flyway migration scripts -->
+        <Class name="~.*V\d+__.*"/>
+        <Method name="migrate"/>
+        <Or>
+            <!-- e.g. 'A prepared statement is generated from a nonconstant String in [..].V1__init.migrate(Context) -->
+            <Bug pattern="SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING"/>
+            <!-- e.g. 'prepareStatement(Ljava/lang/String;)Ljava/sql/PreparedStatement; can be vulnerable to SQL injection (with JDBC) -->
+            <Bug pattern="SQL_INJECTION_JDBC"/>
+        </Or>
+    </Match>
+
+    <Match>
+        <!--
+            prevents false positives in spring boot:
+            HealthContributorAutoConfigs cannot be an inner static class - would not be picked up by spring correctly
+        -->
+        <Class name="~.*HealthContributorAutoConfiguration"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
+    </Match>
+
+    <Match>
+        <Or>
+            <!-- all classes named '*Api' or '*Ctrl' are known to be Spring endpoints and should not be reported -->
+            <Class name="~.*Api"/>
+            <Class name="~.*Ctrl"/>
+        </Or>
+        <Bug pattern="SPRING_ENDPOINT"/>
+    </Match>
+
+    <Match>
+        <Or>
+            <!-- it's okay to store Tor objects as field -->
+            <Field name="tor" type="org.berndpruenster.netlayer.tor.Tor" />
+            <Field name="socket" type="org.berndpruenster.netlayer.tor.HiddenServiceSocket" />
+        </Or>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+
+    <Match>
+        <!-- prevents false positives in constructors of domain classes extending org.springframework.data.domain.AbstractAggregateRoot -->
+        <Method name="&lt;init&gt;"/>
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+    </Match>
 
 </FindBugsFilter>

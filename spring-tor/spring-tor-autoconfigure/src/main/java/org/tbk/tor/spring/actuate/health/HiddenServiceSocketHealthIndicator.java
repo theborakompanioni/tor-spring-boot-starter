@@ -1,42 +1,50 @@
 package org.tbk.tor.spring.actuate.health;
 
 import com.google.common.collect.ImmutableMap;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.extern.slf4j.Slf4j;
 import org.berndpruenster.netlayer.tor.HiddenServiceSocket;
 import org.berndpruenster.netlayer.tor.TorSocket;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthContributor;
 
+import java.io.IOException;
 import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
 @Slf4j
-public class HiddenServiceSocketHealthIndicator extends AbstractHealthIndicator implements HealthContributor {
+public class HiddenServiceSocketHealthIndicator extends AbstractHealthIndicator {
+
     private static final String STREAM_ID = "health";
 
-    private final HiddenServiceSocket hiddenServiceSocket;
+    private final HiddenServiceSocket socket;
 
-    public HiddenServiceSocketHealthIndicator(HiddenServiceSocket hiddenServiceSocket) {
-        this.hiddenServiceSocket = requireNonNull(hiddenServiceSocket);
+    public HiddenServiceSocketHealthIndicator(HiddenServiceSocket socket) {
+        this.socket = requireNonNull(socket);
     }
 
+    @SuppressFBWarnings(
+            value = "SECCRLFLOG",
+            justification = "It's acceptable to log HiddenServiceSocket details."
+    )
     @Override
     protected void doHealthCheck(Health.Builder builder) {
         Map<String, Object> details = ImmutableMap.<String, Object>builder()
-                .put("name", hiddenServiceSocket.getServiceName())
-                .put("address", hiddenServiceSocket.getSocketAddress())
-                .put("local_address", hiddenServiceSocket.getLocalSocketAddress())
+                .put("name", socket.getServiceName())
+                .put("address", socket.getSocketAddress())
+                .put("local_address", socket.getLocalSocketAddress())
                 .build();
 
-        log.debug("Performing health check on {}", hiddenServiceSocket);
+        if (log.isDebugEnabled()) {
+            log.debug("Performing health check on {}", socket);
+        }
 
-        try (TorSocket s1 = new TorSocket(hiddenServiceSocket.getSocketAddress(), STREAM_ID)) {
-            log.debug("Successfully performed health check on {}", hiddenServiceSocket);
+        try (TorSocket s1 = new TorSocket(socket.getSocketAddress(), STREAM_ID)) {
+            log.debug("Successfully performed health check on {}", socket);
 
             builder.up().withDetails(details);
-        } catch (Exception e) {
+        } catch (IOException e) {
             log.warn("Exception while performing hidden service health check: {}", e.getMessage());
 
             builder.outOfService()

@@ -9,7 +9,7 @@
     with a few tweaks by Will Molloy (https://wilmol.com/).
 
     Note this assumes spotless (with googleJavaFormat()) is used in conjunction with checkstyle.
-    Therefore some rules (e.g. LineLength, Indentation) are disabled as they conflict with spotless.
+    Therefor some rules (e.g. LineLength, Indentation) are disabled as they conflict with spotless.
  -->
 
 <module name="Checker">

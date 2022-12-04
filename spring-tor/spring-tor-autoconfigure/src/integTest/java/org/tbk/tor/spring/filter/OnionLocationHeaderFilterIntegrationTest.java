@@ -46,7 +46,7 @@ public class OnionLocationHeaderFilterIntegrationTest {
         @RestController
         public static class HelloTestCtrl {
             @GetMapping(path = "/hello")
-            public ResponseEntity<? extends Map<String, Object>> hello() {
+            public ResponseEntity<Object> hello() {
                 Map<String, Object> result = ImmutableMap.<String, Object>builder()
                         .put("message", "hello world.")
                         .build();
