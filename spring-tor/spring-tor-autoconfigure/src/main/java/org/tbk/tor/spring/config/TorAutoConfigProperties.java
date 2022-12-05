@@ -2,7 +2,6 @@ package org.tbk.tor.spring.config;
 
 import com.google.common.base.CharMatcher;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
@@ -14,6 +13,8 @@ import java.net.InetAddress;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+
+import static java.util.Objects.requireNonNullElse;
 
 
 @ConfigurationProperties(
@@ -48,27 +49,27 @@ public class TorAutoConfigProperties implements Validator {
     private HealthCheckProperties health;
 
     public String getWorkingDirectory() {
-        return workingDirectory != null ? workingDirectory : DEFAULT_WORKING_DIRECTORY;
+        return requireNonNullElse(workingDirectory, DEFAULT_WORKING_DIRECTORY);
     }
 
     public boolean getAutoPublishEnabled() {
-        return autoPublishEnabled != null ? autoPublishEnabled : DEFAULT_AUTO_PUBLISH_ENABLED;
+        return requireNonNullElse(autoPublishEnabled, DEFAULT_AUTO_PUBLISH_ENABLED);
     }
 
     public int getVirtualPort() {
-        return virtualPort != null ? virtualPort : DEFAULT_VIRTUAL_PORT;
+        return requireNonNullElse(virtualPort, DEFAULT_VIRTUAL_PORT);
     }
 
     public Duration getStartupTimeout() {
-        return startupTimeout != null ? startupTimeout : DEFAULT_START_TIMEOUT;
+        return requireNonNullElse(startupTimeout, DEFAULT_START_TIMEOUT);
     }
 
     public OnionLocationHeaderProperties getOnionLocationHeader() {
-        return onionLocationHeader != null ? onionLocationHeader : DEFAULT_ONION_LOCATION_HEADER;
+        return requireNonNullElse(onionLocationHeader, DEFAULT_ONION_LOCATION_HEADER);
     }
 
     public HealthCheckProperties getHealth() {
-        return health != null ? health : DEFAULT_HEALTH_CHECK;
+        return requireNonNullElse(health, DEFAULT_HEALTH_CHECK);
     }
 
     @Override
@@ -113,7 +114,7 @@ public class TorAutoConfigProperties implements Validator {
         private String path;
 
         public Duration getTimeout() {
-            return timeout != null ? timeout : DEFAULT_TIMEOUT;
+            return requireNonNullElse(timeout, DEFAULT_TIMEOUT);
         }
 
         public Optional<String> getPath() {
@@ -142,11 +143,11 @@ public class TorAutoConfigProperties implements Validator {
         private int port;
 
         public String getHost() {
-            return host != null ? host : DEFAULT_HOST;
+            return requireNonNullElse(host, DEFAULT_HOST);
         }
 
         public int getVirtualPort() {
-            return virtualPort != null ? virtualPort : DEFAULT_VIRTUAL_PORT;
+            return requireNonNullElse(virtualPort, DEFAULT_VIRTUAL_PORT);
         }
 
         @Override
@@ -188,7 +189,10 @@ public class TorAutoConfigProperties implements Validator {
         }
     }
 
-    @Data
+    // TODO: currently unused till netlayer can include multiple socket definitions
+    // see https://github.com/bisq-network/netlayer/pull/13 for more information
+    @Getter
+    @AllArgsConstructor(onConstructor = @__(@ConstructorBinding))
     public static class HiddenServiceSocketProperties implements Validator {
         private String directory;
         private int port;
@@ -198,11 +202,11 @@ public class TorAutoConfigProperties implements Validator {
         private Duration startupTimeout;
 
         public int getVirtualPort() {
-            return virtualPort != null ? virtualPort : port;
+            return requireNonNullElse(virtualPort, port);
         }
 
         public Duration getStartupTimeout() {
-            return startupTimeout != null ? startupTimeout : DEFAULT_START_TIMEOUT;
+            return requireNonNullElse(startupTimeout, DEFAULT_START_TIMEOUT);
         }
 
         @Override

@@ -79,7 +79,8 @@ public class TorHiddenServiceAutoConfiguration {
      * The following code does not work, as class {@link org.berndpruenster.netlayer.tor.Torrc} uses
      * a map as key value store, and all subsequent HiddenServiceDir/HiddenServicePort combinations will
      * be overwritten : /
-     * try again later or write a pull request for the project. this is currently just "nice to have" feature..
+     * try again later or write a pull request for the project. this is currently just "nice to have" feature...
+     * See <a href="https://github.com/bisq-network/netlayer/pull/13">netlayer#13</a> (last checked on 2022-03-05)
      */
     @Profile("tbk-tor-try-also-to-publish-management-port-as-distinct-hidden-service---disabled-danger-danger-danger")
     @Configuration(proxyBeanMethods = false)

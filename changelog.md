@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking
 - upgrade: update spring-boot from v2.7.5 to v3.0.0
+- feat: immutable configuration properties
 
 ### Added
 - ability to provide request path and timeout for health check
