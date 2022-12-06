@@ -6,7 +6,6 @@ description = 'tor http client package'
 
 dependencies {
     api project(':spring-tor:spring-tor-core')
-    api "org.apache.httpcomponents:httpclient:${httpComponentsClientVersion}"
 
-    implementation "io.projectreactor:reactor-core"
+    api "org.apache.httpcomponents:httpclient:${httpComponentsClientVersion}"
 }
