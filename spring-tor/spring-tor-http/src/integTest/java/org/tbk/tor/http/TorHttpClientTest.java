@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.berndpruenster.netlayer.tor.NativeTor;
 import org.berndpruenster.netlayer.tor.TorCtlException;
 import org.hamcrest.Matchers;
@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 
@@ -68,13 +67,11 @@ class TorHttpClientTest {
     void testOnionWithTor() throws IOException {
         HttpGet req = new HttpGet(ONION_URL);
 
-        try (CloseableHttpResponse rsp = this.sut.execute(req)) {
-            String body = EntityUtils.toString(rsp.getEntity(), StandardCharsets.UTF_8);
+        String body = this.sut.execute(req, new BasicResponseHandler());
 
-            // body should contain a list of addresses - including the one we fetched from!
-            assertThat(body, containsString("onion.torproject.org"));
-            assertThat(body, containsString(ONION_URL.toString()));
-        }
+        // body should contain a list of addresses - including the one we fetched from!
+        assertThat(body, containsString("onion.torproject.org"));
+        assertThat(body, containsString(ONION_URL.toString()));
     }
 
     @Test
@@ -84,13 +81,11 @@ class TorHttpClientTest {
         for (URI url : urls) {
             HttpGet req = new HttpGet(url);
 
-            try (CloseableHttpResponse rsp = this.sut.execute(req)) {
-                String body = EntityUtils.toString(rsp.getEntity(), StandardCharsets.UTF_8);
+            String body = this.sut.execute(req, new BasicResponseHandler());
 
-                assertThat(body, containsString("Congratulations. This browser is configured to use Tor."));
-                assertThat(body, not(containsStringIgnoringCase("Sorry")));
-                assertThat(body, not(containsStringIgnoringCase("You are not using Tor")));
-            }
+            assertThat(body, containsString("Congratulations. This browser is configured to use Tor."));
+            assertThat(body, not(containsStringIgnoringCase("Sorry")));
+            assertThat(body, not(containsStringIgnoringCase("You are not using Tor")));
         }
     }
 
@@ -105,7 +100,7 @@ class TorHttpClientTest {
                 }
             }
         });
-        
+
         assertThat(expectedException.getMessage(), Matchers.anyOf(
                 containsString("Temporary failure in name resolution"),
                 containsString("Name or service not known")
@@ -116,13 +111,12 @@ class TorHttpClientTest {
     void testHttpWithoutTor() throws IOException {
         HttpGet req = new HttpGet(CHECK_TOR_URL_HTTPS);
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
-            try (CloseableHttpResponse rsp = client.execute(req)) {
-                String body = EntityUtils.toString(rsp.getEntity(), StandardCharsets.UTF_8);
 
-                assertThat(body, containsString("Sorry. You are not using Tor."));
-                assertThat(body, not(containsStringIgnoringCase("Congratulations")));
-                assertThat(body, not(containsStringIgnoringCase("This browser is configured to use Tor")));
-            }
+            String body = client.execute(req, new BasicResponseHandler());
+
+            assertThat(body, containsString("Sorry. You are not using Tor."));
+            assertThat(body, not(containsStringIgnoringCase("Congratulations")));
+            assertThat(body, not(containsStringIgnoringCase("This browser is configured to use Tor")));
         }
     }
 }
