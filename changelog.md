@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- add http client module based on apache httpclient5
+
+
 ## [0.7.0] - 2022-12-05
 
 ### Breaking
