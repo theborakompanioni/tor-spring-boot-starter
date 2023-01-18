@@ -7,18 +7,18 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.time.Duration;
 
-public class NativeTorFactoryTest {
+class NativeTorFactoryTest {
 
     private NativeTorFactory sut;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         File workingDirectory = new File("build/tmp/tor-working-dir");
         this.sut = new NativeTorFactory(workingDirectory);
     }
 
     @Test
-    public void itShouldCreateTorSuccessfully() {
+    void itShouldCreateTorSuccessfully() {
         NativeTor nativeTor = sut.create().blockOptional(Duration.ofSeconds(30))
                 .orElseThrow(() -> new IllegalStateException("Could not start tor"));
 

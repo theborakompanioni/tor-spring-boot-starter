@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "server.port=13337",
         "org.tbk.tor.onion-location-header.allow-on-localhost-http=false"
 })
-public class OnionLocationHeaderFilterIntegrationTest {
+class OnionLocationHeaderFilterIntegrationTest {
 
     @SpringBootApplication
     public static class HiddenServiceTestApplication {
@@ -64,7 +64,7 @@ public class OnionLocationHeaderFilterIntegrationTest {
     private HiddenServiceDefinition hiddenService;
 
     @Test
-    public void itShouldNotAddHeaderIfRequestIsNotSecure() throws Exception {
+    void itShouldNotAddHeaderIfRequestIsNotSecure() throws Exception {
         mockMvc.perform(get("/hello"))
                 .andExpect(header().doesNotExist("Onion-Location"))
                 .andExpect(jsonPath("message").value("hello world."))
@@ -72,7 +72,7 @@ public class OnionLocationHeaderFilterIntegrationTest {
     }
 
     @Test
-    public void itShouldAddHeaderIfRequestIsSecure() throws Exception {
+    void itShouldAddHeaderIfRequestIsSecure() throws Exception {
         String expectedHeaderValue = String.format("http://%s/hello", hiddenService.getVirtualHostOrThrow());
 
         mockMvc.perform(get("/hello").secure(true))

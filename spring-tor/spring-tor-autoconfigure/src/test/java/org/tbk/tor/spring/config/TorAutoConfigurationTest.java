@@ -16,7 +16,7 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class TorAutoConfigurationTest {
+class TorAutoConfigurationTest {
     // order of the autoconfig classes is important here!
     private static final Class<?>[] autoConfigClasses = new Class[]{
             TorHiddenServiceAutoConfiguration.class,

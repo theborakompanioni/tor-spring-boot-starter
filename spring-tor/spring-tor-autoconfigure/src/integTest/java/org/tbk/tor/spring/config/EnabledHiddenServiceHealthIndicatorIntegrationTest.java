@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "management.endpoint.health.show-details=always",
         "management.health.hiddenService.enabled=true"
 })
-public class EnabledHiddenServiceHealthIndicatorIntegrationTest {
+class EnabledHiddenServiceHealthIndicatorIntegrationTest {
     private static final CombinableMatcher<String> jsonPathStatusUpOrDownMatcher = either(is(Status.UP.getCode()))
             .or(is(Status.DOWN.getCode()));
     private static final CombinableMatcher<Integer> statusOkOrUnavailableMatcher = either(is(WebEndpointResponse.STATUS_OK))
@@ -69,7 +69,7 @@ public class EnabledHiddenServiceHealthIndicatorIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    public void itShouldCheckHiddenServiceHealthEndpoint() throws Exception {
+    void itShouldCheckHiddenServiceHealthEndpoint() throws Exception {
         // here we just check if the response is well-formed
         // after the start the hidden service might not yet be reachable and return 503 DOWN
         // if we are lucky we get 200 UP - but this is not important in this test case
@@ -84,7 +84,7 @@ public class EnabledHiddenServiceHealthIndicatorIntegrationTest {
     }
 
     @Test
-    public void itShouldAddHiddenServiceInformationToHealthEndpoint() throws Exception {
+    void itShouldAddHiddenServiceInformationToHealthEndpoint() throws Exception {
         mockMvc.perform(get("/actuator/health"))
                 .andDo(print())
                 .andExpect(jsonPath("status").value(jsonPathStatusUpOrDownMatcher))
