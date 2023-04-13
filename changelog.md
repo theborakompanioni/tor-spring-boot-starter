@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - upgrade: update spring-boot from v3.0.0 to v3.0.4
+- upgrade: update netlayer from v0.7.5 to v0.7.6
 
 ## [0.7.0] - 2022-12-05
 
