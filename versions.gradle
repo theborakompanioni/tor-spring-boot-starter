@@ -3,7 +3,7 @@ ext {
     httpComponentsClientVersion = '4.5.13'
     httpComponentsClient5Version = '5.2'
     netlayerVersion = '0.7.6'
-    lombokVersion = '1.18.20'
+    lombokVersion = '1.18.26'
     checkstyleVersion = '10.3.4'
     findsecbugsPluginVersion = '1.12.0'
     springBootGradlePluginVersion = '3.0.6'

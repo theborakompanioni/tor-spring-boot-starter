@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - upgrade: update spring-boot from v3.0.0 to v3.0.6
 - upgrade: update netlayer from v0.7.5 to v0.7.6
+- upgrade: update lombok from v1.18.20 to v1.18.26
 
 ## [0.7.0] - 2022-12-05
 
