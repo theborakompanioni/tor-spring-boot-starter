@@ -11,13 +11,16 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootGradlePluginVersion}")
     }
+    configurations.classpath {
+        resolutionStrategy.activateDependencyLocking()
+    }
 }
 
 plugins {
     id 'idea'
-    id 'nebula.release' version '17.1.0'
-    id 'nebula.lint' version '17.7.1'
-    id 'com.netflix.nebula.project' version '10.0.1'
+    id 'nebula.release' version '17.2.2'
+    id 'nebula.lint' version '18.1.0'
+    id 'com.netflix.nebula.project' version '10.1.5'
     id 'com.github.spotbugs' version '5.0.13' apply false
     id 'org.springframework.boot' version "$springBootGradlePluginVersion" apply false
     id 'io.franzbecker.gradle-lombok' version '5.0.0' apply false
@@ -68,7 +71,7 @@ subprojects {
     apply plugin: 'checkstyle'
     apply plugin: 'com.github.spotbugs'
     apply plugin: 'com.netflix.nebula.project'
-    apply plugin: 'nebula.info'
+    apply plugin: 'com.netflix.nebula.info'
     apply plugin: 'com.netflix.nebula.integtest-standalone'
     apply plugin: 'io.franzbecker.gradle-lombok'
     apply plugin: 'io.spring.dependency-management'
@@ -113,7 +116,9 @@ subprojects {
         includeEmptyDirs false
     }
 
-    task sourcesJar(type: Jar) {
+    sourcesJar {
+        duplicatesStrategy DuplicatesStrategy.EXCLUDE
+
         archiveClassifier.set('sources')
         from sourceSets.main.java
     }
@@ -221,6 +226,7 @@ subprojects {
     }
 
     javadoc {
+        onlyIf { project.hasProperty('javadocEnabled') }
         dependsOn delombok
         source = delombok.outputDir
         failOnError = false
