@@ -1,3 +1,6 @@
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.Effort
+import com.github.spotbugs.snom.SpotBugsTask
 import io.franzbecker.gradle.lombok.task.DelombokTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
@@ -21,7 +24,7 @@ plugins {
     id 'nebula.release' version '17.2.2'
     id 'nebula.lint' version '18.1.0'
     id 'com.netflix.nebula.project' version '10.1.5'
-    id 'com.github.spotbugs' version '5.0.13' apply false
+    id 'com.github.spotbugs' version '5.2.1' apply false
     id 'org.springframework.boot' version "$springBootGradlePluginVersion" apply false
     id 'io.franzbecker.gradle-lombok' version '5.0.0' apply false
 }
@@ -233,13 +236,13 @@ subprojects {
     }
 
     spotbugs {
-        effort = 'max'
-        reportLevel = 'low'
+        effort = Effort.MAX
+        reportLevel = Confidence.LOW
         ignoreFailures = false
         excludeFilter = rootProject.file('./spotbugs-exclude.xml')
         reportsDir = rootProject.file("$rootProject.buildDir/reports/spotbugs/$project.name")
     }
-    tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
+    tasks.withType(SpotBugsTask) {
         reports {
             html.enabled = true
             xml.enabled = false

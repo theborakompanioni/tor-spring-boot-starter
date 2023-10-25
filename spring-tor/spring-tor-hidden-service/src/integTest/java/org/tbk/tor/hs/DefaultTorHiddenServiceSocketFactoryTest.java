@@ -26,7 +26,7 @@ import static org.hamcrest.Matchers.is;
 @Slf4j
 class DefaultTorHiddenServiceSocketFactoryTest {
 
-    private final int port = 21011;
+    private static final int port = 21011;
 
     private DefaultTorHiddenServiceSocketFactory sut;
 

@@ -8,6 +8,7 @@ import lombok.*;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -67,7 +68,7 @@ public class HiddenServiceDefinition {
         try {
             Path hostnamePath = Path.of(directory.getAbsolutePath(), "hostname");
 
-            return Files.readAllLines(hostnamePath).stream().findFirst()
+            return Files.readAllLines(hostnamePath, StandardCharsets.UTF_8).stream().findFirst()
                     .filter(it -> !it.isBlank())
                     .orElseThrow(() -> new IllegalStateException("File is empty: " + hostnamePath));
         } catch (IOException e) {

@@ -15,7 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/api/v1/tor")
 @RequiredArgsConstructor
-public class TorCtrl {
+class TorCtrl {
 
     @NonNull
     private final Tor tor;

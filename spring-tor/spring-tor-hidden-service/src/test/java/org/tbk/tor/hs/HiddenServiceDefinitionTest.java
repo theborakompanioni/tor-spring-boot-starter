@@ -15,9 +15,10 @@ class HiddenServiceDefinitionTest {
 
     @Test
     void verifyExceptionOnMissingArguments() {
-        assertThrows(IllegalArgumentException.class,
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> HiddenServiceDefinition.builder().build(),
                 "Verify it throws IAE (instead of NPE)");
+        assertThat(exception.getMessage(), containsString(""));
     }
 
     @Test

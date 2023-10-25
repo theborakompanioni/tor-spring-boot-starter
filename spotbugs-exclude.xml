@@ -74,7 +74,10 @@
             <Class name="~.*Api"/>
             <Class name="~.*Ctrl"/>
         </Or>
-        <Bug pattern="SPRING_ENDPOINT"/>
+        <Or>
+            <Bug pattern="SPRING_ENDPOINT"/>
+            <Bug pattern="CT_CONSTRUCTOR_THROW"/>
+        </Or>
     </Match>
 
     <Match>
