@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- upgrade: update spring-boot from v3.1.4 to v3.3.5
+
 ## [0.8.0] - 2023-05-03
 ### Added
 - add http client module based on apache httpclient5
