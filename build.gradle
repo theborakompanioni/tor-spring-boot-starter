@@ -291,5 +291,3 @@ configure(subprojects.findAll { project -> project.subprojects.isEmpty() &&
         project.name.indexOf('-example-application') < 0 }) {
     apply from: "${project.rootDir}/publish.gradle"
 }
-
-

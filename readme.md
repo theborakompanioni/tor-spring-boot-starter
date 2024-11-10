@@ -142,4 +142,3 @@ Before you start, please read the [contributing guidelines](contributing.md).
 ## License
 
 The project is licensed under the Apache License. See [LICENSE](LICENSE) for details.
-

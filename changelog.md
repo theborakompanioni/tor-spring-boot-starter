@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2024-11-10
 ### Changed
 - upgrade: update spring-boot from v3.1.4 to v3.3.5
 - upgrade: update guava from v30.1 to v33.3.1
@@ -52,7 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.8.0...HEAD
+[Unreleased]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.9.0...HEAD
+[0.9.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.5.0...0.6.0
