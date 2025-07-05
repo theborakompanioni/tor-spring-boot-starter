@@ -59,6 +59,8 @@ The example above imports module `spring-tor-starter` - you can import any modul
 
 Start the example application with
 ```shell
+just run-example
+# or
 ./gradlew -p spring-tor/spring-tor-example-application bootRun
 ```
 
@@ -75,7 +77,7 @@ Example output (2021-01-21):
 2021-01-21 01:23:33.607  INFO [...] : port: 8080
 2021-01-21 01:23:33.607  INFO [...] : directory: /home/tbk/workspace/tor-spring-boot-starter/spring-tor/spring-tor-example-application/tor-working-dir/spring_boot_app
 2021-01-21 01:23:33.608  INFO [...] : -------------------------------------------------
-2021-01-21 01:23:33.608  INFO [...] : run: torsocks -p 46735 curl http://<your_onion_url>.onion:80/index.html -v
+2021-01-21 01:23:33.608  INFO [...] : run: curl --verbose --proxy socks5h://localhost:9050 http://<your_onion_url>.onion:80/index.html -v
 2021-01-21 01:23:33.608  INFO [...] : =================================================
 ```
 
