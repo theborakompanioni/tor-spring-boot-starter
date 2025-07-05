@@ -22,7 +22,7 @@ buildscript {
 plugins {
     id 'idea'
     id 'nebula.release' version '17.2.2'
-    id 'nebula.lint' version '21.0.0'
+    id 'nebula.lint' version '20.6.2'
     id 'com.netflix.nebula.project' version '10.1.5'
     id 'com.github.spotbugs' version '5.2.1' apply false
     id 'org.springframework.boot' version "$springBootGradlePluginVersion" apply false
