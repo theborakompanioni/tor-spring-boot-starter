@@ -69,3 +69,19 @@ update-verification:
      -Dorg.gradle.parallel=false \
      dependencies \
      --write-verification-metadata pgp,sha256 --export-keys --write-locks
+
+# check style
+[group("development")]
+checkstyle:
+    @./gradlew checkstyleMain checkstyleTest checkstyleIntegTest
+
+# spot bugs
+[group("development")]
+spotbugs:
+    @./gradlew spotbugsMain spotbugsTest spotbugsIntegTest
+
+# lint files
+[group("development")]
+lint:
+    @./gradlew autoLintGradle
+
