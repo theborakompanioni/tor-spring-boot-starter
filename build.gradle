@@ -245,7 +245,7 @@ subprojects {
         reportLevel = Confidence.LOW
         ignoreFailures = false
         excludeFilter = rootProject.file('./spotbugs-exclude.xml')
-        reportsDir = rootProject.file("$rootProject.layout.buildDirectory/reports/spotbugs/$project.name")
+        reportsDir = layout.buildDirectory.dir("./reports/spotbugs").get().asFile
     }
     tasks.withType(SpotBugsTask).configureEach {
         reports {
@@ -259,7 +259,7 @@ subprojects {
         configFile = rootProject.file('./checkstyle.xml')
         maxErrors = 0
         ignoreFailures = false
-        reportsDir = rootProject.file("$rootProject.layout.buildDirectory/reports/checkstyle/$project.name")
+        reportsDir = layout.buildDirectory.dir("./reports/checkstyle").get().asFile
     }
     tasks.withType(Checkstyle).configureEach {
         reports {
