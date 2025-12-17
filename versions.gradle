@@ -6,7 +6,7 @@ ext {
     lombokVersion = '1.18.42'
     checkstyleVersion = '12.3.0'
     findsecbugsPluginVersion = '1.12.0'
-    springBootGradlePluginVersion = '3.5.3'
+    springBootGradlePluginVersion = '4.0.0'
 }
 
 // hack: 2022-10-20T00:00Z - change this timestamp to invalidate GitHub Actions gradle caches.
