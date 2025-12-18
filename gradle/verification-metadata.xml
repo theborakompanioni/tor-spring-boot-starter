@@ -31,6 +31,7 @@
          <trusted-key id="06D34ED6FF73DE368A772A781063FE98BCECB758">
             <trusting group="com.puppycrawl.tools" name="checkstyle" version="10.26.1"/>
             <trusting group="com.puppycrawl.tools" name="checkstyle" version="10.3.4"/>
+            <trusting group="com.puppycrawl.tools" name="checkstyle" version="12.3.0"/>
          </trusted-key>
          <trusted-key id="077E8893A6DCC33DD4A4D5B256E73BA9A0B592D0" group="^org[.]apache[.]logging($|([.].*))" regex="true"/>
          <trusted-key id="0785B3EFF60B1B1BEA94E0BB7C25280EAE63EBE5" group="^org[.]apache[.]httpcomponents($|([.].*))" regex="true"/>
@@ -250,6 +251,7 @@
             <trusting group="com.google.j2objc" name="j2objc-annotations" version="3.0.0"/>
          </trusted-key>
          <trusted-key id="BE685132AFD2740D9095F9040CC0B712FEE75827" group="org.assertj"/>
+         <trusted-key id="C3259D20DAEC4ACE6D57CC83340B090F727518D8" group="com.google.j2objc" name="j2objc-annotations" version="3.1"/>
          <trusted-key id="C663D2F64DA2CA09DB28D9ABD3FA67D522C55256">
             <trusting group="org.apache.pulsar" name="pulsar-bom" version="3.2.4"/>
             <trusting group="org.apache.pulsar" name="pulsar-bom" version="4.0.5"/>
