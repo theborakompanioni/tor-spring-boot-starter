@@ -79,14 +79,19 @@ subprojects {
     apply plugin: 'io.franzbecker.gradle-lombok'
     apply plugin: 'io.spring.dependency-management'
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(JavaVersion.VERSION_17.getMajorVersion())
+        }
+    }
 
     repositories {
         mavenCentral()
         maven {
             // needed for netlayer packages
-            url "https://jitpack.io"
+            url = 'https://jitpack.io'
         }
     }
 
@@ -116,11 +121,11 @@ subprojects {
     }
 
     jar {
-        includeEmptyDirs false
+        includeEmptyDirs = false
     }
 
     sourcesJar {
-        duplicatesStrategy DuplicatesStrategy.EXCLUDE
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
         archiveClassifier.set('sources')
         from sourceSets.main.java
@@ -146,7 +151,7 @@ subprojects {
             launchScript()
             archiveClassifier.set('boot')
 
-            includeEmptyDirs false
+            includeEmptyDirs = false
         }
 
         springBoot {
@@ -189,14 +194,14 @@ subprojects {
         sha256 = null // skip verifyLombok task - will be done by gradle dependency verification
     }
 
-    tasks.withType(Test) {
+    tasks.withType(Test).configureEach {
         testLogging {
             // set options for log level LIFECYCLE
             events TestLogEvent.STARTED, TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED
-            showExceptions true
-            exceptionFormat TestExceptionFormat.FULL
-            showCauses true
-            showStackTraces true
+            showExceptions = true
+            exceptionFormat = TestExceptionFormat.FULL
+            showCauses = true
+            showStackTraces = true
 
             afterSuite { desc, result ->
                 if (!desc.parent) { // will match the outermost suite
@@ -209,9 +214,9 @@ subprojects {
         }
     }
 
-    task dependencyTree(type: DependencyReportTask) {}
+    tasks.register('dependencyTree', DependencyReportTask) {}
 
-    task delombok(type: DelombokTask, dependsOn: compileJava) {
+    tasks.register('delombok', DelombokTask) {
         def srcDirs = sourceSets.main.java.srcDirs.findAll { it.exists() }
 
         enabled = subprojects.isEmpty() && !srcDirs.isEmpty()
@@ -242,7 +247,7 @@ subprojects {
         excludeFilter = rootProject.file('./spotbugs-exclude.xml')
         reportsDir = rootProject.file("$rootProject.buildDir/reports/spotbugs/$project.name")
     }
-    tasks.withType(SpotBugsTask) {
+    tasks.withType(SpotBugsTask).configureEach {
         reports {
             html.enabled = true
             xml.enabled = false
@@ -256,14 +261,14 @@ subprojects {
         ignoreFailures = false
         reportsDir = rootProject.file("$rootProject.buildDir/reports/checkstyle/$project.name")
     }
-    tasks.withType(Checkstyle) {
+    tasks.withType(Checkstyle).configureEach {
         reports {
             xml.required = false
             html.required = true
         }
     }
 
-    tasks.withType(AbstractArchiveTask) {
+    tasks.withType(AbstractArchiveTask).configureEach {
         // activate reproducible archives
         // see https://docs.gradle.org/current/userguide/working_with_files.html#sec:reproducible_archives
         preserveFileTimestamps = false
