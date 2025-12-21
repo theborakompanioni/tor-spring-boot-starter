@@ -103,7 +103,8 @@ class TorHttpClientTest {
 
         assertThat(expectedException.getMessage(), Matchers.anyOf(
                 containsString("Temporary failure in name resolution"),
-                containsString("Name or service not known")
+                containsString("Name or service not known"),
+                containsString("No address associated with hostname")
         ));
     }
 
