@@ -36,7 +36,7 @@ contacts {
     }
 }
 
-configurations.all {
+configurations.configureEach {
     resolutionStrategy {
         // check for updates in modules every build
         cacheChangingModulesFor 0, 'seconds'
@@ -79,14 +79,19 @@ subprojects {
     apply plugin: 'io.franzbecker.gradle-lombok'
     apply plugin: 'io.spring.dependency-management'
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(JavaVersion.VERSION_17.getMajorVersion())
+        }
+    }
 
     repositories {
         mavenCentral()
         maven {
             // needed for netlayer packages
-            url "https://jitpack.io"
+            url = 'https://jitpack.io'
         }
     }
 
@@ -116,17 +121,17 @@ subprojects {
     }
 
     jar {
-        includeEmptyDirs false
+        includeEmptyDirs = false
     }
 
     sourcesJar {
-        duplicatesStrategy DuplicatesStrategy.EXCLUDE
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
         archiveClassifier.set('sources')
         from sourceSets.main.java
     }
 
-    task testJar(type: Jar) {
+    tasks.register('testJar', Jar) {
         archiveClassifier.set('test')
         from sourceSets.test.output
     }
@@ -146,7 +151,7 @@ subprojects {
             launchScript()
             archiveClassifier.set('boot')
 
-            includeEmptyDirs false
+            includeEmptyDirs = false
         }
 
         springBoot {
@@ -189,14 +194,14 @@ subprojects {
         sha256 = null // skip verifyLombok task - will be done by gradle dependency verification
     }
 
-    tasks.withType(Test) {
+    tasks.withType(Test).configureEach {
         testLogging {
             // set options for log level LIFECYCLE
             events TestLogEvent.STARTED, TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED
-            showExceptions true
-            exceptionFormat TestExceptionFormat.FULL
-            showCauses true
-            showStackTraces true
+            showExceptions = true
+            exceptionFormat = TestExceptionFormat.FULL
+            showCauses = true
+            showStackTraces = true
 
             afterSuite { desc, result ->
                 if (!desc.parent) { // will match the outermost suite
@@ -209,14 +214,14 @@ subprojects {
         }
     }
 
-    task dependencyTree(type: DependencyReportTask) {}
+    tasks.register('dependencyTree', DependencyReportTask) {}
 
-    task delombok(type: DelombokTask, dependsOn: compileJava) {
+    tasks.register('delombok', DelombokTask) {
         def srcDirs = sourceSets.main.java.srcDirs.findAll { it.exists() }
 
         enabled = subprojects.isEmpty() && !srcDirs.isEmpty()
 
-        ext.outputDir = file("$buildDir/delombok")
+        ext.outputDir = layout.buildDirectory.dir("./delombok").get().asFile
         outputs.dir(outputDir)
         srcDirs.each {
             inputs.dir(it)
@@ -240,12 +245,12 @@ subprojects {
         reportLevel = Confidence.LOW
         ignoreFailures = false
         excludeFilter = rootProject.file('./spotbugs-exclude.xml')
-        reportsDir = rootProject.file("$rootProject.buildDir/reports/spotbugs/$project.name")
+        reportsDir = rootProject.file("$rootProject.layout.buildDirectory/reports/spotbugs/$project.name")
     }
-    tasks.withType(SpotBugsTask) {
+    tasks.withType(SpotBugsTask).configureEach {
         reports {
-            html.enabled = true
-            xml.enabled = false
+            html.required = true
+            xml.required = false
         }
     }
 
@@ -254,16 +259,16 @@ subprojects {
         configFile = rootProject.file('./checkstyle.xml')
         maxErrors = 0
         ignoreFailures = false
-        reportsDir = rootProject.file("$rootProject.buildDir/reports/checkstyle/$project.name")
+        reportsDir = rootProject.file("$rootProject.layout.buildDirectory/reports/checkstyle/$project.name")
     }
-    tasks.withType(Checkstyle) {
+    tasks.withType(Checkstyle).configureEach {
         reports {
             xml.required = false
             html.required = true
         }
     }
 
-    tasks.withType(AbstractArchiveTask) {
+    tasks.withType(AbstractArchiveTask).configureEach {
         // activate reproducible archives
         // see https://docs.gradle.org/current/userguide/working_with_files.html#sec:reproducible_archives
         preserveFileTimestamps = false
