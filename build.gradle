@@ -241,6 +241,7 @@ subprojects {
     }
 
     spotbugs {
+        toolVersion = "${spotbugsVersion}"
         effort = Effort.MAX
         reportLevel = Confidence.valueOf('LOW')
         ignoreFailures = false
