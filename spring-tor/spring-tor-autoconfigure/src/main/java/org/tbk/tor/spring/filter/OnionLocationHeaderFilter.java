@@ -1,5 +1,6 @@
 package org.tbk.tor.spring.filter;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -98,6 +99,7 @@ public final class OnionLocationHeaderFilter extends OncePerRequestFilter {
         response.addHeader(HEADER_NAME, onionUrl);
     }
 
+    @SuppressFBWarnings(value = "SERVLET_SERVER_NAME", justification = "reasonable usage")
     private boolean supportsAddingOnionLocationHeader(HttpServletRequest request, HttpServletResponse response) {
         boolean hasOnionLocationHeader = !response.getHeaders(HEADER_NAME).isEmpty();
         boolean isVirtualHostnameAvailable = hiddenService.getVirtualHost().isPresent();
@@ -112,7 +114,7 @@ public final class OnionLocationHeaderFilter extends OncePerRequestFilter {
         boolean isServedByNonOnionSite = Optional.of(request.getServerName())
                 .map(it -> !it.endsWith(".onion"))
                 .orElseGet(() -> {
-                    // assume served by onion site if we cannot determine. lets play it safe.
+                    // assume served by onion site if we cannot determine. let's play it safe.
                     return false;
                 });
 
