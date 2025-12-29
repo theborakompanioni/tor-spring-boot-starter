@@ -242,7 +242,7 @@ subprojects {
 
     spotbugs {
         effort = Effort.MAX
-        reportLevel = Confidence.LOW
+        reportLevel = Confidence.valueOf('LOW')
         ignoreFailures = false
         excludeFilter = rootProject.file('./spotbugs-exclude.xml')
         reportsDir = rootProject.file("$rootProject.layout.buildDirectory/reports/spotbugs/$project.name")
