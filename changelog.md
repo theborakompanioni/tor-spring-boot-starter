@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - upgrade: update lombok from v1.18.26 to v1.18.42
 
 
+### Breaking
+- upgrade: update java from v17 to v21
+
 ## [0.9.0] - 2024-11-10
 ### Changed
 - upgrade: update spring-boot from v3.1.4 to v3.3.5
