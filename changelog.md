@@ -6,16 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking
+- upgrade: update java from v17 to v21
+
 ## [0.10.0] - 2025-12-30
 ### Changed
 - upgrade: update spring-boot from v3.3.5 to v3.5.9
 - upgrade: update guava from v33.3.1 to v33.5.0
 - upgrade: update httpclient to v4.5.14
 - upgrade: update lombok from v1.18.26 to v1.18.42
-
-
-### Breaking
-- upgrade: update java from v17 to v21
 
 ## [0.9.0] - 2024-11-10
 ### Changed
