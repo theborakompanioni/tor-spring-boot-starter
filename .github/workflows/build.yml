@@ -45,6 +45,9 @@ jobs:
       - name: Build project
         run: ./gradlew build -x test
 
+      - name: Spotbugs
+        run: ./gradlew spotbugsMain
+
       - name: Unit Test
         run: ./gradlew test
 
