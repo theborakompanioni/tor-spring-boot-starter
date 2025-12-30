@@ -1,6 +1,7 @@
 package org.tbk.tor.spring.filter;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockFilterChain;
@@ -9,6 +10,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.tbk.tor.hs.HiddenServiceDefinition;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 
@@ -42,7 +44,7 @@ class OnionLocationHeaderFilterTest {
     }
 
     @Test
-    void noop() throws Exception {
+    void noop() throws ServletException, IOException {
         OnionLocationHeaderFilter sut = OnionLocationHeaderFilter.noop();
         sut.setAllowOnLocalhostWithHttp(true);
 
@@ -52,7 +54,7 @@ class OnionLocationHeaderFilterTest {
     }
 
     @Test
-    void create() throws Exception {
+    void create() throws ServletException, IOException {
         HiddenServiceDefinition build = HiddenServiceDefinition.builder()
                 .directory(hostnameFile.getParentFile())
                 .virtualPort(80)

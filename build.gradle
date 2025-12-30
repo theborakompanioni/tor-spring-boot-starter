@@ -99,6 +99,10 @@ subprojects {
         imports {
             mavenBom SpringBootPlugin.BOM_COORDINATES
         }
+        dependencies {
+            // see https://github.com/spotbugs/spotbugs-gradle-plugin/issues/1436#issuecomment-3606151400
+            dependency "com.github.spotbugs:spotbugs-annotations:${spotbugsVersion}"
+        }
     }
 
     dependencies {
