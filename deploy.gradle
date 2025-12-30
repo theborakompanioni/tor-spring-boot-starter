@@ -1,0 +1,39 @@
+apply plugin: 'org.jreleaser'
+
+jreleaser {
+    dryrun = false
+    gitRootSearch = true
+    strict = true
+
+    signing {
+        active = 'NEVER' // done with nebula
+    }
+
+    release {
+        github {
+            enabled = true
+            commitAuthor {
+                name = 'theborakompanioni'
+                email = 'theborakompanioni+github@gmail.com'
+            }
+            prerelease {
+                enabled = true
+            }
+            draft = true
+            overwrite = false
+        }
+    }
+
+    deploy {
+        maven {
+            mavenCentral {
+                'release-deploy' {
+                    active = 'RELEASE'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    stagingRepository(layout.buildDirectory.dir('staging-deploy').get().toString())
+                    sign = false // done with nebula
+                }
+            }
+        }
+    }
+}

@@ -24,6 +24,7 @@ plugins {
     id 'nebula.release' version '17.2.2'
     id 'nebula.lint' version '20.6.2'
     id 'com.netflix.nebula.project' version '13.0.0'
+    id 'org.jreleaser' version '1.20.0' apply false
     id 'com.github.spotbugs' version '6.4.8' apply false
     id 'org.springframework.boot' version "$springBootGradlePluginVersion" apply false
     id 'io.franzbecker.gradle-lombok' version '5.0.0' apply false
@@ -300,4 +301,5 @@ configure(subprojects.findAll { project -> project.subprojects.isEmpty() &&
         !project.pluginManager.hasPlugin('org.springframework.boot') &&
         project.name.indexOf('-example-application') < 0 }) {
     apply from: "${project.rootDir}/publish.gradle"
+    apply from: "${project.rootDir}/deploy.gradle"
 }
