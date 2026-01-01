@@ -39,6 +39,7 @@
             <trusting group="com.puppycrawl.tools" name="checkstyle" version="10.26.1"/>
             <trusting group="com.puppycrawl.tools" name="checkstyle" version="10.3.4"/>
             <trusting group="com.puppycrawl.tools" name="checkstyle" version="12.3.0"/>
+            <trusting group="com.puppycrawl.tools" name="checkstyle" version="12.3.1"/>
          </trusted-key>
          <trusted-key id="077E8893A6DCC33DD4A4D5B256E73BA9A0B592D0" group="^org[.]apache[.]logging($|([.].*))" regex="true"/>
          <trusted-key id="0785B3EFF60B1B1BEA94E0BB7C25280EAE63EBE5" group="^org[.]apache[.]httpcomponents($|([.].*))" regex="true"/>
@@ -366,6 +367,7 @@
          <trusted-key id="FBE9E7D58BCFE0A77E6B185B6995601D9B0B88DB" group="com.github.victools"/>
          <trusted-key id="FC411CD3CB7DCB0ABC9801058118B3BCDB1A5000" group="jakarta.xml.bind"/>
          <trusted-key id="FE72F1BFE9632B1FE049AC3E5BCD80B78ACD3A37" group="com.oracle.database.jdbc" name="ojdbc-bom" version="21.7.0.0"/>
+         <trusted-key id="FEB9209F2F2F3F4664841E55AC107B386692DADD" group="^software[.]amazon($|([.].*))" regex="true"/>
          <trusted-key id="FF6E2C001948C5F2F38B0CC385911F425EC61B51">
             <trusting group="org.apiguardian"/>
             <trusting group="org.opentest4j"/>
