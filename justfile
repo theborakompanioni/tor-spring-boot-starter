@@ -49,11 +49,15 @@ test:
 test-integration:
     @./gradlew integrationTest --rerun-tasks --no-parallel
 
-
 # run all tests
 [group("development")]
 test-all:
     @./gradlew test integrationTest --rerun-tasks --no-parallel
+
+# build javadocs
+[group("development")]
+javadoc:
+    @./gradlew javadoc -PjavadocEnabled
 
 # run example application
 [group("example")]
