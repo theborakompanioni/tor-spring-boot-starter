@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking
 - upgrade: update java from v17 to v21
+- upgrade: update spring-boot from v3.5.9 to v4.0.1
 
 ## [0.10.0] - 2025-12-30
 ### Changed

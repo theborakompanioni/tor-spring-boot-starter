@@ -14,7 +14,7 @@ dependencies {
     api project(':spring-tor:spring-tor-http')
 
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
-    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-starter-webmvc'
     compileOnly 'org.springframework.boot:spring-boot-starter-actuator'
 
     compileOnly 'jakarta.servlet:jakarta.servlet-api'
@@ -27,6 +27,6 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
