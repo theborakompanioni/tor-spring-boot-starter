@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-01-04
 ### Breaking
 - upgrade: update java from v17 to v21
 - upgrade: update spring-boot from v3.5.9 to v4.0.1
@@ -64,7 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.10.0...HEAD
+[Unreleased]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.11.0...HEAD
+[0.11.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.10.0...0.11.0
 [0.10.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.9.0...0.10.0
 [0.9.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.7.0...0.8.0

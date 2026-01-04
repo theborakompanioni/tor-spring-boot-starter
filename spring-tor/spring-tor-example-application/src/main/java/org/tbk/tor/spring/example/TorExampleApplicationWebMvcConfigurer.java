@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
 import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.SerializationFeature;
@@ -68,7 +69,7 @@ public class TorExampleApplicationWebMvcConfigurer implements WebMvcConfigurer {
         }
 
         @Override
-        public void serialize(BigDecimal value, tools.jackson.core.JsonGenerator gen, SerializationContext ctxt) throws JacksonException {
+        public void serialize(BigDecimal value, JsonGenerator gen, SerializationContext ctxt) throws JacksonException {
             gen.writeString(value.toPlainString());
         }
     }
