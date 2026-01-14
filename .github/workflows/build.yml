@@ -40,7 +40,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
 
       - name: Lint Gradle File
-        run: ./gradlew autoLintGradle
+        run: ./gradlew autoLintGradle --no-parallel
 
       - name: Build project
         run: ./gradlew build -x test
