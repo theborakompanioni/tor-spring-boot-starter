@@ -1,7 +1,7 @@
 ext {
     guavaVersion = '33.5.0-jre'
     httpComponentsClientVersion = '4.5.14'
-    httpComponentsClient5Version = '5.2'
+    httpComponentsClient5Version = '5.6'
     netlayerVersion = '0.7.6'
     lombokVersion = '1.18.42'
     checkstyleVersion = '13.0.0'

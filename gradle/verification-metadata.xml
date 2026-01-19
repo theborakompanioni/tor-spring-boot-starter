@@ -378,6 +378,7 @@
             <trusting group="org.jetbrains.kotlinx" name="kotlinx-coroutines-bom" version="1.6.4"/>
          </trusted-key>
          <trusted-key id="E85AED155021AF8A6C6B7A4A7C7D8456294423BA" group="org.objenesis"/>
+         <trusted-key id="EAFC1F3B2FCED6AFD046C7D5734AEF3D43509290" group="org.osgi"/>
          <trusted-key id="EE0CA873074092F806F59B65D364ABAA39A47320" group="com.google.errorprone"/>
          <trusted-key id="EF6AD6684034B0CB67A9B5714406B84C1661DCD1" group="org.springframework.data" name="spring-data-bom" version="2022.0.0"/>
          <trusted-key id="F046369B06B761AC86D9849F71B329993BFFCFDD" group="com.oracle.database.jdbc" name="ojdbc-bom" version="21.9.0.0"/>
