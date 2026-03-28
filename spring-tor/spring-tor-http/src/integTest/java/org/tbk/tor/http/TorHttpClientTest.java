@@ -1,6 +1,5 @@
 package org.tbk.tor.http;
 
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -32,8 +31,8 @@ class TorHttpClientTest {
     // "onion.torproject.org" as onion. taken from https://onion.torproject.org/ on 2022-07-01
     private static final URI ONION_URL = URI.create("http://xao2lxsmia2edq2n5zxg6uahx6xox2t7bfjw6b5vdzsxi7ezmqob6qid.on" + "ion/");
 
-    private static final URI CHECK_TOR_URL_HTTP = URI.create("http://check.torproject.org/");
-    private static final URI CHECK_TOR_URL_HTTPS = URI.create("https://check.torproject.org/");
+    private static final URI CHECK_TOR_API_URL_HTTP = URI.create("http://check.torproject.org/api/ip");
+    private static final URI CHECK_TOR_API_URL_HTTPS = URI.create("https://check.torproject.org/api/ip");
 
     private CloseableHttpClient sut;
 
@@ -76,16 +75,12 @@ class TorHttpClientTest {
 
     @Test
     void testHttpWithTor() throws IOException {
-        List<URI> urls = Lists.newArrayList(CHECK_TOR_URL_HTTP, CHECK_TOR_URL_HTTPS);
-
-        for (URI url : urls) {
+        for (URI url : List.of(CHECK_TOR_API_URL_HTTP, CHECK_TOR_API_URL_HTTPS)) {
             HttpGet req = new HttpGet(url);
 
             String body = this.sut.execute(req, new BasicResponseHandler());
 
-            assertThat(body, containsString("Congratulations. This browser is configured to use Tor."));
-            assertThat(body, not(containsStringIgnoringCase("Sorry")));
-            assertThat(body, not(containsStringIgnoringCase("You are not using Tor")));
+            assertThat(body, containsString("\"IsTor\":true"));
         }
     }
 
@@ -110,14 +105,12 @@ class TorHttpClientTest {
 
     @Test
     void testHttpWithoutTor() throws IOException {
-        HttpGet req = new HttpGet(CHECK_TOR_URL_HTTPS);
+        HttpGet req = new HttpGet(CHECK_TOR_API_URL_HTTPS);
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 
             String body = client.execute(req, new BasicResponseHandler());
 
-            assertThat(body, containsString("Sorry. You are not using Tor."));
-            assertThat(body, not(containsStringIgnoringCase("Congratulations")));
-            assertThat(body, not(containsStringIgnoringCase("This browser is configured to use Tor")));
+            assertThat(body, containsString("\"IsTor\":false"));
         }
     }
 }
