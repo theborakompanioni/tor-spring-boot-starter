@@ -40,7 +40,7 @@ public class HiddenServiceSocketHealthIndicator extends AbstractHealthIndicator 
             log.debug("Performing health check on {}", socket);
         }
 
-        try (TorSocket s1 = new TorSocket(socket.getSocketAddress(), STREAM_ID)) {
+        try (TorSocket s1 = new TorSocket(socket.getSocketAddress(), "127.0.0.1", STREAM_ID)) {
             log.debug("Successfully performed health check on {}", socket);
 
             builder.up().withDetails(details);

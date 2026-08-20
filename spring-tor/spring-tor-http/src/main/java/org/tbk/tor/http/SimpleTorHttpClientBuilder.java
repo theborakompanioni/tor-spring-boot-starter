@@ -35,7 +35,7 @@ public final class SimpleTorHttpClientBuilder {
     }
 
     public static HttpClientBuilder tor(Tor tor) throws TorCtlException {
-        Socks5Proxy proxy = tor.getProxy();
+        Socks5Proxy proxy = tor.getProxy("127.0.0.1");
         InetAddress inetAddress = proxy.getInetAddress();
 
         SocketAddress socketAddress = new InetSocketAddress(inetAddress, proxy.getPort());
