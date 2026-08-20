@@ -1,9 +1,9 @@
 ext {
-    guavaVersion = '33.6.0-jre'
+    guavaVersion = '33.7.1-jre'
     httpComponentsClientVersion = '4.5.14'
-    netlayerVersion = '0.7.6'
-    lombokVersion = '1.18.44'
-    checkstyleVersion = '13.4.0'
+    netlayerVersion = '09c287b457'
+    lombokVersion = '1.18.46'
+    checkstyleVersion = '14.0.0'
     spotbugsVersion = '4.9.8'
     findsecbugsPluginVersion = '1.14.0'
     springBootGradlePluginVersion = '4.0.5'

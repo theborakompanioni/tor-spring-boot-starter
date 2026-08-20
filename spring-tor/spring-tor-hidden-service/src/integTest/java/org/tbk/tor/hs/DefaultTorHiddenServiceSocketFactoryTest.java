@@ -78,7 +78,7 @@ class DefaultTorHiddenServiceSocketFactoryTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         new Thread(() -> {
             log.info("trying to connect to the hidden service {}", hiddenServiceSocket);
-            try (TorSocket s1 = new TorSocket(hiddenServiceSocket.getSocketAddress(), "foo")) {
+            try (TorSocket s1 = new TorSocket(hiddenServiceSocket.getSocketAddress(), "127.0.0.1", "foo")) {
                 log.info("Successfully connected to {}", hiddenServiceSocket);
 
                 log.info("Closing socket now...");
@@ -88,7 +88,7 @@ class DefaultTorHiddenServiceSocketFactoryTest {
             }
 
             // retry connecting
-            try (TorSocket s2 = new TorSocket(hiddenServiceSocket.getServiceName(), hiddenServiceSocket.getHiddenServicePort(), "foo")) {
+            try (TorSocket s2 = new TorSocket(hiddenServiceSocket.getServiceName(), hiddenServiceSocket.getHiddenServicePort(), "127.0.0.1", "foo")) {
                 // do nothing on purpose
                 log.error("expected an error when opening connection to closed hidden service socket");
             } catch (IOException e) {

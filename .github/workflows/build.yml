@@ -12,7 +12,9 @@ jobs:
     name: "Gradle Wrapper Validation"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: gradle/actions/wrapper-validation@v6
 
   build:
@@ -21,17 +23,18 @@ jobs:
 
     strategy:
       matrix:
-        java-version: [ 21 ]
+        java-version-file: [ '.sdkmanrc' ]
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Setup JDK
         uses: actions/setup-java@v5
         with:
-          distribution: 'adopt'
-          java-version: ${{ matrix.java-version }}
+          java-version-file: ${{ matrix.java-version-file }}
 
       - name: Print Java Version
         run: java --version
