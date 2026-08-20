@@ -97,7 +97,7 @@ public class TorHealthContributorAutoConfiguration {
         return builder -> {
             Optional<Socks5Proxy> proxyOrEmpty = Optional.of(tor).map(it -> {
                 try {
-                    return tor.getProxy("127.0.0.1");
+                    return tor.getProxy("localhost");
                 } catch (TorCtlException e) {
                     return null;
                 }

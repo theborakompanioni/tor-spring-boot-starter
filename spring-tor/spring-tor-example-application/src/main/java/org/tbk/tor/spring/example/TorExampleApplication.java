@@ -74,7 +74,7 @@ public class TorExampleApplication {
             httpUrl.ifPresent(url -> {
                 log.info("-------------------------------------------------");
                 try {
-                    log.info("run: curl --verbose --proxy socks5h://localhost:{} {}/index.html -v", tor.getProxy("127.0.0.1").getPort(), url);
+                    log.info("run: curl --verbose --proxy socks5h://localhost:{} {}/index.html -v", tor.getProxy("localhost").getPort(), url);
                 } catch (TorCtlException e) {
                     log.warn("Could not get tor proxy port");
                 }
@@ -105,7 +105,7 @@ public class TorExampleApplication {
                 httpUrl.ifPresent(url -> {
                     log.info("-------------------------------------------------");
                     try {
-                        log.info("run: curl --verbose --proxy socks5h://localhost:{} {}/index.html -v", tor.getProxy("127.0.0.1").getPort(), url);
+                        log.info("run: curl --verbose --proxy socks5h://localhost:{} {}/index.html -v", tor.getProxy("localhost").getPort(), url);
                     } catch (TorCtlException e) {
                         log.warn("Could not get tor proxy port");
                     }

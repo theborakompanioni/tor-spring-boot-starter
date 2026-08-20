@@ -88,7 +88,7 @@ class DefaultTorHiddenServiceSocketFactoryTest {
             }
 
             // retry connecting
-            try (TorSocket s2 = new TorSocket(hiddenServiceSocket.getServiceName(), hiddenServiceSocket.getHiddenServicePort(), "127.0.0.1","foo")) {
+            try (TorSocket s2 = new TorSocket(hiddenServiceSocket.getServiceName(), hiddenServiceSocket.getHiddenServicePort(), "127.0.0.1", "foo")) {
                 // do nothing on purpose
                 log.error("expected an error when opening connection to closed hidden service socket");
             } catch (IOException e) {
