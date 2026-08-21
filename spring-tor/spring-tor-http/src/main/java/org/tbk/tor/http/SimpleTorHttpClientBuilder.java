@@ -23,6 +23,8 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
@@ -66,19 +68,18 @@ public final class SimpleTorHttpClientBuilder {
         URI uri = URI.create(httpTargetHost.toURI());
 
         Proxy proxy = Optional.ofNullable(proxyOrNull)
-                .orElseGet(() -> ProxySelector.getDefault().select(uri).iterator().next());
+                .orElseGet(() -> ProxySelector.getDefault().select(uri).getFirst());
 
         return new Socket(proxy);
     }
 
     /*
-     * It is very difficult to say to an apache http client to "not use my DNS servers while connecting through a proxy".
+     * It is very difficult to say to an Apache HTTP client to "not use my DNS servers while connecting through a proxy".
      *
      * Some code taken from:
      * https://stackoverflow.com/questions/22937983/how-to-use-socks-5-proxy-with-apache-http-client-4/25203021#25203021
      */
-    private static class ProxySelectorPlainConnectionSocketFactory implements ConnectionSocketFactory {
-
+    private static final class ProxySelectorPlainConnectionSocketFactory implements ConnectionSocketFactory {
         private final Proxy proxy;
 
         ProxySelectorPlainConnectionSocketFactory(Proxy proxy) {
@@ -121,13 +122,13 @@ public final class SimpleTorHttpClientBuilder {
         }
     }
 
-    static class FakeDnsResolver implements DnsResolver {
+    static final class FakeDnsResolver implements DnsResolver {
         // Return this fake DNS record for every request, we won't be using it
-        private static final InetAddress[] fakeDnsEntry = {InetAddress.getLoopbackAddress()};
+        private static final List<InetAddress> fakeDnsEntry = Collections.singletonList(InetAddress.getLoopbackAddress());
 
         @Override
         public InetAddress[] resolve(String host) {
-            return fakeDnsEntry;
+            return fakeDnsEntry.toArray(InetAddress[]::new);
         }
     }
 }

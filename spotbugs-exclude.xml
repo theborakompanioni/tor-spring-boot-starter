@@ -8,7 +8,7 @@
     -->
     <Match>
         <Or>
-            <!-- suggests using '%n rather than \n' in string formats.. did not work properly in manual tests -->
+            <!-- suggests using '%n rather than \n' in string formats... did not work properly in manual tests -->
             <Bug pattern="VA_FORMAT_STRING_USES_NEWLINE"/>
             <!-- exclude 'serialVersionUID' warnings: https://github.com/projectlombok/lombok/wiki/WHY-NOT:-serialVersionUID -->
             <Bug pattern="SE_NO_SERIALVERSIONID"/>
@@ -17,6 +17,8 @@
                 can be removed when #600 is merged: https://github.com/spotbugs/spotbugs/pull/1575/files
              -->
             <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+            <!-- `requireNonNull` is used a lot -->
+            <Bug pattern="CT_CONSTRUCTOR_THROW"/>
         </Or>
     </Match>
     <Match>
@@ -52,9 +54,9 @@
         <Class name="~.*V\d+__.*"/>
         <Method name="migrate"/>
         <Or>
-            <!-- e.g. 'A prepared statement is generated from a nonconstant String in [..].V1__init.migrate(Context) -->
+            <!-- e.g. 'A prepared statement is generated from a nonconstant String in [...].V1__init.migrate(Context)' -->
             <Bug pattern="SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING"/>
-            <!-- e.g. 'prepareStatement(Ljava/lang/String;)Ljava/sql/PreparedStatement; can be vulnerable to SQL injection (with JDBC) -->
+            <!-- e.g. 'prepareStatement(Ljava/lang/String;)Ljava/sql/PreparedStatement; can be vulnerable to SQL injection (with JDBC)' -->
             <Bug pattern="SQL_INJECTION_JDBC"/>
         </Or>
     </Match>
