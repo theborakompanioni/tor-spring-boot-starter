@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-- upgrade: update spring-boot from v4.0.1 to v4.0.5
+- upgrade: update spring-boot from v4.0.1 to v4.1.1
 - upgrade: update httpclient5 from v5.2 to v5.5.2 (managed by spring)
 - upgrade: update netlayer from v0.7.6 to 09c287b457 
 
