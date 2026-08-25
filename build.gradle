@@ -20,7 +20,7 @@ buildscript {
 
 plugins {
     id 'idea'
-    id 'nebula.release' version '21.0.0'
+    id 'nebula.release' version '21.1.0'
     id 'nebula.lint' version '21.2.1'
     id 'com.netflix.nebula.project' version '13.1.2'
     id 'org.jreleaser' version '1.20.0' apply false
