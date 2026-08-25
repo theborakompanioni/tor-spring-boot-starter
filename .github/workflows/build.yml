@@ -32,7 +32,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup JDK
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           java-version-file: ${{ matrix.java-version-file }}
 
