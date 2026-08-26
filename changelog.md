@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-08-26
 ### Changed
 - upgrade: update spring-boot from v4.0.1 to v4.1.1
 - upgrade: update httpclient5 from v5.2 to v5.5.2 (managed by spring)
@@ -70,7 +71,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.11.0...HEAD
+[Unreleased]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.12.0...HEAD
+[0.12.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.11.0...0.12.0
 [0.11.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.10.0...0.11.0
 [0.10.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.9.0...0.10.0
 [0.9.0]: https://github.com/theborakompanioni/tor-spring-boot-starter/compare/0.8.0...0.9.0
