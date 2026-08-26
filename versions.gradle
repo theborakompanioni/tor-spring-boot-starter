@@ -4,7 +4,7 @@ ext {
     netlayerVersion = '09c287b457'
     lombokVersion = '1.18.46'
     checkstyleVersion = '14.0.0'
-    spotbugsVersion = '4.9.8'
+    spotbugsVersion = '4.10.4'
     findsecbugsPluginVersion = '1.14.0'
     springBootGradlePluginVersion = '4.1.1'
 }
