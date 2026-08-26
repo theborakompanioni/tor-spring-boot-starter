@@ -1,3 +1,5 @@
+import org.gradle.api.initialization.resolve.RepositoriesMode
+
 rootProject.name = 'tor-spring-boot-starter'
 
 include 'spring-tor:spring-tor-core'
@@ -9,3 +11,14 @@ include 'spring-tor:spring-tor-example-application'
 
 // deprecated in favor of module spring-tor-http-client
 include 'spring-tor:spring-tor-http'
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven {
+            // needed for netlayer packages
+            url = 'https://jitpack.io'
+        }
+    }
+}

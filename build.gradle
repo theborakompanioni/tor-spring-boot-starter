@@ -87,14 +87,6 @@ subprojects {
         }
     }
 
-    repositories {
-        mavenCentral()
-        maven {
-            // needed for netlayer packages
-            url = 'https://jitpack.io'
-        }
-    }
-
     dependencyManagement {
         imports {
             mavenBom SpringBootPlugin.BOM_COORDINATES
@@ -285,9 +277,11 @@ subprojects {
 }
 
 // enable publishing for all subproject except for "example applications"
-configure(subprojects.findAll { project -> project.subprojects.isEmpty() &&
-        !project.pluginManager.hasPlugin('org.springframework.boot') &&
-        project.name.indexOf('-example-application') < 0 }) {
+configure(subprojects.findAll { project ->
+    project.subprojects.isEmpty()
+    && !project.pluginManager.hasPlugin('org.springframework.boot')
+    && project.name.indexOf('-example-application') < 0
+}) {
     apply from: "${project.rootDir}/publish.gradle"
     apply from: "${project.rootDir}/deploy.gradle"
 }
