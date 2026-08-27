@@ -6,27 +6,24 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 buildscript {
-    apply from: 'versions.gradle'
-    repositories {
-        mavenCentral()
-    }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${rootProject.ext.springBootGradlePluginVersion}")
+        classpath libs.spring.boot.plugin
     }
-    configurations.classpath {
+    configurations.configureEach {
         resolutionStrategy.activateDependencyLocking()
     }
 }
 
 plugins {
     id 'idea'
-    id 'nebula.release' version '21.1.0'
-    id 'nebula.lint' version '21.2.1'
-    id 'com.netflix.nebula.project' version '13.1.2'
-    id 'org.jreleaser' version '1.20.0' apply false
-    id 'com.github.spotbugs' version '6.5.11' apply false
-    id 'org.springframework.boot' version "$springBootGradlePluginVersion" apply false
-    id 'io.freefair.lombok' version '9.5.0' apply false
+
+    alias(libs.plugins.release)
+    alias(libs.plugins.lint)
+    alias(libs.plugins.project)
+    alias(libs.plugins.jreleaser) apply false
+    alias(libs.plugins.spotbugs) apply false
+    alias(libs.plugins.spring.boot) apply false
+    alias(libs.plugins.lombok) apply false
 }
 
 contacts {
@@ -45,6 +42,12 @@ configurations.configureEach {
         // e.g. multiple different versions of the same dependency (group and name are equal)
         failOnVersionConflict()
     }
+}
+
+dependencyLocking {
+    lockMode = LockMode.STRICT
+    // locks all project configurations (but not the `buildscript` ones)
+    lockAllConfigurations()
 }
 
 allprojects {
@@ -91,19 +94,16 @@ subprojects {
         imports {
             mavenBom SpringBootPlugin.BOM_COORDINATES
         }
-        dependencies {
-            // see https://github.com/spotbugs/spotbugs-gradle-plugin/issues/1436#issuecomment-3606151400
-            dependency "com.github.spotbugs:spotbugs-annotations:${rootProject.ext.spotbugsVersion}"
-        }
     }
 
     dependencies {
-        compileOnly "com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}"
-        testCompileOnly "com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}"
-        spotbugsPlugins "com.h3xstream.findsecbugs:findsecbugs-plugin:${rootProject.ext.findsecbugsPluginVersion}"
+        compileOnly rootProject.libs.spotbugs.annotations
+        testCompileOnly rootProject.libs.spotbugs.annotations
+        spotbugsPlugins rootProject.libs.findsecbugs.plugin
 
         implementation 'org.slf4j:slf4j-api'
-        implementation "com.google.guava:guava:${rootProject.ext.guavaVersion}"
+
+        implementation rootProject.libs.guava
 
         testImplementation 'org.junit.jupiter:junit-jupiter-api'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -184,7 +184,7 @@ subprojects {
     }
 
     lombok {
-        version = "${rootProject.ext.lombokVersion}"
+        version = rootProject.libs.versions.lombok.get()
     }
 
     tasks.withType(Test).configureEach {
@@ -226,7 +226,7 @@ subprojects {
     }
 
     spotbugs {
-        toolVersion = "${rootProject.ext.spotbugsVersion}"
+        toolVersion = rootProject.libs.versions.spotbugs.get()
         effort = Effort.MAX
         reportLevel = Confidence.valueOf('LOW')
         ignoreFailures = false
@@ -241,7 +241,7 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = "${rootProject.ext.checkstyleVersion}"
+        toolVersion = rootProject.libs.versions.checkstyle.get()
         configFile = rootProject.file('./checkstyle.xml')
         maxErrors = 0
         ignoreFailures = false

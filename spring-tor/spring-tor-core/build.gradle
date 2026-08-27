@@ -7,6 +7,5 @@ description = 'tor core package'
 dependencies {
     api "io.projectreactor:reactor-core"
 
-    api "com.github.bisq-network.netlayer:tor.native:${rootProject.ext.netlayerVersion}"
-    api "com.github.bisq-network.netlayer:tor.external:${rootProject.ext.netlayerVersion}"
+    api libs.bundles.netlayer
 }

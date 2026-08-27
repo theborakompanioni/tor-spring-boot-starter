@@ -1,5 +1,28 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven {
+            // needed for netlayer packages
+            url = 'https://jitpack.io'
+            content {
+                includeGroup('com.github.bisq-network.netlayer')
+                includeGroup('com.github.bisq-network.tor-binary')
+                includeGroup('com.github.bisq-network')
+            }
+        }
+        mavenCentral()
+    }
+}
+
 rootProject.name = 'tor-spring-boot-starter'
 
 include 'spring-tor:spring-tor-core'
@@ -11,14 +34,3 @@ include 'spring-tor:spring-tor-example-application'
 
 // deprecated in favor of module spring-tor-http-client
 include 'spring-tor:spring-tor-http'
-
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        mavenCentral()
-        maven {
-            // needed for netlayer packages
-            url = 'https://jitpack.io'
-        }
-    }
-}

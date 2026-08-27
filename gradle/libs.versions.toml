@@ -1,0 +1,31 @@
+# https://docs.gradle.org/current/userguide/version_catalogs.html
+[versions]
+guava = "33.7.1-jre"
+httpclient4 = "4.5.14"
+netlayer = "09c287b457"
+lombok = "1.18.46"
+checkstyle = "14.0.0"
+spotbugs = "4.10.4"
+findsecbugsPlugin = "1.14.0"
+springBootPlugin = "4.1.1"
+
+[libraries]
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+spotbugs-annotations = { module = "com.github.spotbugs:spotbugs-annotations", version.ref = "spotbugs" }
+findsecbugs-plugin = { module = "com.h3xstream.findsecbugs:findsecbugs-plugin", version.ref = "findsecbugsPlugin" }
+spring-boot-plugin = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "springBootPlugin" }
+netlayer-tor-native = { module = "com.github.bisq-network.netlayer:tor.native", version.ref = "netlayer" }
+netlayer-tor-external = { module = "com.github.bisq-network.netlayer:tor.external", version.ref = "netlayer" }
+httpclient4 = { module = "org.apache.httpcomponents:httpclient", version.ref = "httpclient4" }
+
+[bundles]
+netlayer = ["netlayer-tor-native", "netlayer-tor-external"]
+
+[plugins]
+release = { id = "nebula.release", version = "21.1.0" }
+lint = { id = "nebula.lint", version = "21.2.1" }
+project = { id = "com.netflix.nebula.project", version = "13.1.2" }
+jreleaser = { id = "org.jreleaser", version = "1.20.0" }
+spotbugs = { id = "com.github.spotbugs", version = "6.5.11" }
+spring-boot = { id = "org.springframework.boot", version.ref = "springBootPlugin" }
+lombok = { id = "io.freefair.lombok", version = "9.5.0" }
