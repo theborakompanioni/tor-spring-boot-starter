@@ -1,5 +1,8 @@
 # This justfile requires https://github.com/casey/just
 
+# run example applications
+import 'examples.just'
+
 # Load environment variables from `.env` file.
 set dotenv-load
 # Fail the script if the env file is not found.
@@ -59,11 +62,6 @@ test-all:
 javadoc:
     @./gradlew javadoc -PjavadocEnabled
 
-# run example application
-[group("example")]
-run-example:
-    @./gradlew -P spring-tor/spring-tor-example-application bootRun --args='--spring.profiles.active=development,local'
-
 # update metadata for dependency verification
 [group("development")]
 update-verification:
@@ -73,6 +71,16 @@ update-verification:
      -Dorg.gradle.parallel=false \
      dependencies dependencyTree \
      --write-verification-metadata pgp,sha256 --export-keys --write-locks
+
+# update dependency lockfiles
+[group("development")]
+update-lockfiles:
+    @./gradlew \
+     -Dorg.gradle.caching=false \
+     -Dorg.gradle.configureondemand=false \
+     -Dorg.gradle.parallel=false \
+     dependencies dependencyTree \
+     --write-locks
 
 # check style
 [group("development")]

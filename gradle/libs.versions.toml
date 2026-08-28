@@ -22,9 +22,9 @@ httpclient4 = { module = "org.apache.httpcomponents:httpclient", version.ref = "
 netlayer = ["netlayer-tor-native", "netlayer-tor-external"]
 
 [plugins]
-release = { id = "nebula.release", version = "21.1.0" }
-lint = { id = "nebula.lint", version = "21.2.1" }
-project = { id = "com.netflix.nebula.project", version = "13.1.2" }
+nebula-release = { id = "nebula.release", version = "21.1.0" }
+nebula-lint = { id = "nebula.lint", version = "21.2.1" }
+nebula-project = { id = "com.netflix.nebula.project", version = "13.1.2" }
 jreleaser = { id = "org.jreleaser", version = "1.20.0" }
 spotbugs = { id = "com.github.spotbugs", version = "6.5.11" }
 spring-boot = { id = "org.springframework.boot", version.ref = "springBootPlugin" }

@@ -46,10 +46,7 @@ jobs:
         run: ./gradlew autoLintGradle --no-parallel
 
       - name: Build project
-        run: ./gradlew build -x test
-
-      - name: Spotbugs
-        run: ./gradlew spotbugsMain
+        run: ./gradlew build spotbugsMain -x test
 
       - name: Unit Test
         run: ./gradlew test
