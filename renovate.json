@@ -11,7 +11,8 @@
       "buildscript-gradle.lockfile",
       "gradle/verification-metadata.xml",
       "gradle/verification-keyring.gpg",
-      "gradle/verification-keyring.keys"
+      "gradle/verification-keyring.keys",
+      "**/*.lockfile"
     ],
     "installTools": {
       "java": {}
