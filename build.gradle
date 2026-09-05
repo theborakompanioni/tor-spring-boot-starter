@@ -61,7 +61,7 @@ allprojects {
     configurations.configureEach {
         resolutionStrategy {
             // check for updates in modules every build
-            cacheChangingModulesFor 0, 'seconds'
+            // cacheChangingModulesFor 0, 'seconds'
             preferProjectModules()
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
