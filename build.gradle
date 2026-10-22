@@ -67,7 +67,7 @@ allprojects {
             // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
 
-            force 'com.google.errorprone:error_prone_annotations:2.50.0'
+            force 'com.google.errorprone:error_prone_annotations:2.51.0'
         }
     }
 }
